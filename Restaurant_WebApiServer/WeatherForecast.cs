@@ -1,4 +1,4 @@
-namespace Server_API
+namespace Restaurant_WebApiServer
 {
     public class WeatherForecast
     {
