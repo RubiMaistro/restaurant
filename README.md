@@ -3,6 +3,7 @@ Restaurant Client-Server WebApp
 
 Információk
 -----------
+| :---: | :---: |
 | Hallgató neve |	Deák Ruben
 | Neptun kód | XLJKQY
 | Témavezető neve | Dr. Kuki Attila
