@@ -3,6 +3,7 @@ Restaurant Client-Server WebApp
 
 Információk
 -----------
+| Info | Adat |
 | :---: | :---: |
 | Hallgató neve |	Deák Ruben
 | Neptun kód | XLJKQY
