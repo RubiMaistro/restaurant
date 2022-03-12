@@ -1,0 +1,32 @@
+﻿@page "/foodmenu"
+
+<PageTitle>Menu</PageTitle>
+
+<h1>FoodMenu</h1>
+
+@if (Foods == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var food in Foods)
+            {
+                <tr>
+                    <td>@food.Name</td>
+                    <td>@food.Description</td>
+                    <td>@food.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
