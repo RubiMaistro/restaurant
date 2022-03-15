@@ -8,12 +8,11 @@ namespace Restaurant_CustomerWebClient.Pages
     {
         [Inject]
         public HttpClient HttpClient { get; set; }
-        public IList<Food> Foods { get; set; }
+        public List<Food> Foods { get; set; }
 
         protected override async Task OnInitializedAsync()      
         {
-            Foods = await HttpClient.GetFromJsonAsync<IList<Food>>("food");
-            await base.OnInitializedAsync();
+            Foods = await HttpClient.GetFromJsonAsync<List<Food>>("food");
         }
     }
 }
