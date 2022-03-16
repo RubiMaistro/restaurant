@@ -18,11 +18,13 @@ namespace Restaurant_Common.Models
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
         [Required]
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } 
 
         public Order(double price)
         {
             Price = price;
+            CreatedDate = DateTime.Now;
+            Status = OrderStatus.Recorded;
         }
 
     }

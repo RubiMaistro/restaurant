@@ -17,11 +17,14 @@ namespace Restaurant_Common.Models
         public int FoodId { get; set; }
         [Required]
         public int OrderId { get; set; }
+        [Required]
+        public DateTime OrderDate { get; set; }
 
         public OrderedFood(int foodId, int orderId)
         {
             FoodId = foodId;
             OrderId = orderId;
+            OrderDate = DateTime.Now;
         }
     }
 }
