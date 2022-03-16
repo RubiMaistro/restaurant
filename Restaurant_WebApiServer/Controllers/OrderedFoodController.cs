@@ -5,7 +5,7 @@ using Restaurant_WebApiServer.Repositories;
 namespace Restaurant_WebApiServer.Controllers
 {
     [ApiController]
-    [Route("api/orderedfood")]
+    [Route("api/food/ordered")]
     public class OrderedFoodController : Controller
     {
         [HttpGet]

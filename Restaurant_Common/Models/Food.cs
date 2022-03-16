@@ -14,15 +14,18 @@ namespace Restaurant_Common.Models
         [Key]
         public int Id { get; set; } 
         [Required]
+        public FoodType FoodType { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public int Price { get; set; }
 
-        public Food(int id, string name, string description, int price)
+        public Food(int id, FoodType foodType, string name, string description, int price)
         {
             Id = id;
+            FoodType = foodType;
             Name = name;
             Description = description;
             Price = price;
