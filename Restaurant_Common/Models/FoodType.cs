@@ -8,24 +8,17 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Common.Models
 {
-    public class Food
+    public class FoodType
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; } 
+        public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Description { get; set; }
-        [Required]
-        public int Price { get; set; }
+        public string? Name { get; set; }
 
-        public Food(int id, string name, string description, int price)
+        public FoodType(string name)
         {
-            Id = id;
             Name = name;
-            Description = description;
-            Price = price;
         }
 
     }

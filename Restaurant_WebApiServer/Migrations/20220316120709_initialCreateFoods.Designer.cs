@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant_WebApiServer.Repositories;
 
@@ -9,10 +10,11 @@ using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer.Migrations
 {
-    [DbContext(typeof(FoodContext))]
-    partial class FoodContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RestaurantDbContext))]
+    [Migration("20220316120709_initialCreateFoods")]
+    partial class initialCreateFoods
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

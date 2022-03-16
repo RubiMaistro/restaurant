@@ -10,7 +10,7 @@ namespace Restaurant_WebApiServer.Repositories
     {
         public static IList<Food> GetFoods()
         {
-            using (var database = new FoodContext())
+            using (var database = new RestaurantDbContext())
             {
                 var foods = database.Foods.ToList();
 
@@ -20,7 +20,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static Food GetFoodById(long id)
         {
-            using (var database = new FoodContext())
+            using (var database = new RestaurantDbContext())
             {
                 var food = database.Foods.Where(food => food.Id == id).FirstOrDefault();
 
@@ -30,7 +30,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void AddFood(Food food)
         {
-            using (var database = new FoodContext())
+            using (var database = new RestaurantDbContext())
             {
                 database.Foods.Add(food);
 
@@ -40,7 +40,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static bool UpdateFood(Food food, long id)
         {
-            using (var database = new FoodContext())
+            using (var database = new RestaurantDbContext())
             {
                 var dbFood = database.Foods.Where(food => food.Id == id).FirstOrDefault();
 
@@ -59,7 +59,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void DeleteFood(Food food)
         {
-            using (var database = new FoodContext())
+            using (var database = new RestaurantDbContext())
             {
                 database.Foods.Remove(food);
 

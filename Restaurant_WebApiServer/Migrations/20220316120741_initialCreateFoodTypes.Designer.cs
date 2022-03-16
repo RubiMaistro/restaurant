@@ -10,9 +10,9 @@ using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer.Migrations
 {
-    [DbContext(typeof(FoodContext))]
-    [Migration("20220309203017_initialCreate")]
-    partial class initialCreate
+    [DbContext(typeof(RestaurantDbContext))]
+    [Migration("20220316120741_initialCreateFoodTypes")]
+    partial class initialCreateFoodTypes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,23 @@ namespace Restaurant_WebApiServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("Restaurant_Common.Models.FoodType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FoodTypes");
                 });
 #pragma warning restore 612, 618
         }
