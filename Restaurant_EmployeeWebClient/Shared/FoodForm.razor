@@ -1,0 +1,37 @@
+﻿<EditForm Model="@Food" OnValidSubmit="@SubmitForm">
+    <DataAnnotationsValidator/>
+
+    <div class="form-group row">
+        <label for="firstname" class="col-sm-3">Owner First Name</label>
+        <div class="col-sm-6">
+            <InputText id="firstname" class="form-control" @bind-Value="@Food.Name" placeholder="Étel megnevezése"></InputText>
+            <ValidationMessage For="() => Food.Name"/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="lastname" class="col-sm-3">Owner Last Name</label>
+        <div class="col-sm-6">
+            <InputText id="lastname" class="form-control" @bind-Value="@Food.Description" placeholder="Étel leírása"></InputText>
+            <ValidationMessage For="() => Food.Description"/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="carmodel" class="col-sm-3">Car Model</label>
+        <div class="col-sm-6">
+            <input id="plate_number" class="form-control" value="@Food.FoodTypeId" placeholder="Enter car licence plate number" />
+            <ValidationMessage For="() => Food.FoodTypeId"/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="plate_number" class="col-sm-3">Car Licence Plate Number</label>
+        <div class="col-sm-6">
+            <input id="plate_number" class="form-control" value="@Food.Price" placeholder="Enter car licence plate number" />
+            <ValidationMessage For="() => Food.Price"/>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@ButtonTitle</button>
+</EditForm>

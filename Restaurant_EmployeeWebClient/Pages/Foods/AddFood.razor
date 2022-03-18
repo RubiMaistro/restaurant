@@ -1,0 +1,28 @@
+﻿@page "/addfood"
+
+<style>
+    .page-title {
+        text-align: center;
+        margin-bottom: 1.2em;
+    }
+</style>
+
+<h1 class="page-title">Customer Order Adding Manager</h1>
+
+<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewCustomerOrder" CustomerOrder="@Food"></FoodForm>
+
+@code {
+        [Inject]
+        public HttpClient HttpClient { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        public Food Food { get; set; } = new Food();
+
+        private async Task AddNewCustomerOrder()
+        {
+            await HttpClient.PostAsJsonAsync("food", Food);
+            NavigationManager.NavigateTo("foodlist");
+        }
+}

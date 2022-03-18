@@ -22,6 +22,7 @@ namespace Restaurant_Common.Models
         [Required]
         public int Price { get; set; }
 
+        public Food() { }
         public Food(int id, int foodTypeId, string name, string description, int price)
         {
             Id = id;
