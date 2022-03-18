@@ -14,7 +14,7 @@ namespace Restaurant_Common.Models
         [Key]
         public int Id { get; set; } 
         [Required]
-        public FoodType FoodType { get; set; }
+        public int FoodTypeId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -22,10 +22,10 @@ namespace Restaurant_Common.Models
         [Required]
         public int Price { get; set; }
 
-        public Food(int id, FoodType foodType, string name, string description, int price)
+        public Food(int id, int foodTypeId, string name, string description, int price)
         {
             Id = id;
-            FoodType = foodType;
+            FoodTypeId = foodTypeId;
             Name = name;
             Description = description;
             Price = price;

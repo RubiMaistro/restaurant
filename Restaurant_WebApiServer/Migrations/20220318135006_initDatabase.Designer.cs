@@ -12,8 +12,8 @@ using Restaurant_WebApiServer.Repositories;
 namespace Restaurant_WebApiServer.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20220316125203_initialOrderedFood")]
-    partial class initialOrderedFood
+    [Migration("20220318135006_initDatabase")]
+    partial class initDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,9 @@ namespace Restaurant_WebApiServer.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FoodTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,6 +100,9 @@ namespace Restaurant_WebApiServer.Migrations
 
                     b.Property<int>("FoodId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
