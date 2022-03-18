@@ -2,7 +2,7 @@
     <DataAnnotationsValidator/>
 
     <div class="form-group row">
-        <label for="firstname" class="col-sm-3">Owner First Name</label>
+        <label for="firstname" class="col-sm-3">Megnevezése</label>
         <div class="col-sm-6">
             <InputText id="firstname" class="form-control" @bind-Value="@Food.Name" placeholder="Étel megnevezése"></InputText>
             <ValidationMessage For="() => Food.Name"/>
@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="lastname" class="col-sm-3">Owner Last Name</label>
+        <label for="lastname" class="col-sm-3">Leírás</label>
         <div class="col-sm-6">
             <InputText id="lastname" class="form-control" @bind-Value="@Food.Description" placeholder="Étel leírása"></InputText>
             <ValidationMessage For="() => Food.Description"/>
@@ -18,17 +18,17 @@
     </div>
 
     <div class="form-group row">
-        <label for="carmodel" class="col-sm-3">Car Model</label>
+        <label for="carmodel" class="col-sm-3">Típusa (ez helyett dropdown kell)</label>
         <div class="col-sm-6">
-            <input id="plate_number" class="form-control" value="@Food.FoodTypeId" placeholder="Enter car licence plate number" />
+            <input id="plate_number" class="form-control" value="@Food.FoodTypeId" placeholder="(ide egy dropdown kell)" />
             <ValidationMessage For="() => Food.FoodTypeId"/>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="plate_number" class="col-sm-3">Car Licence Plate Number</label>
+        <label for="plate_number" class="col-sm-3">Ára</label>
         <div class="col-sm-6">
-            <input id="plate_number" class="form-control" value="@Food.Price" placeholder="Enter car licence plate number" />
+            <input id="plate_number" class="form-control" value="@Food.Price" placeholder="Étel ára forintban" />
             <ValidationMessage For="() => Food.Price"/>
         </div>
     </div>

@@ -1,5 +1,8 @@
 ﻿@page "/addfood"
 
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
 <style>
     .page-title {
         text-align: center;
@@ -7,22 +10,17 @@
     }
 </style>
 
-<h1 class="page-title">Customer Order Adding Manager</h1>
+<h1 class="page-title">Étel létrehozása</h1>
 
-<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewCustomerOrder" CustomerOrder="@Food"></FoodForm>
+<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewFood" Food="@Food"></FoodForm>
 
 @code {
-        [Inject]
-        public HttpClient HttpClient { get; set; }
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
+    public Food Food { get; set; } = new Food();
 
-        public Food Food { get; set; } = new Food();
-
-        private async Task AddNewCustomerOrder()
-        {
-            await HttpClient.PostAsJsonAsync("food", Food);
-            NavigationManager.NavigateTo("foodlist");
-        }
+    private async Task AddNewFood()
+    {
+        await HttpClient.PostAsJsonAsync("food", Food);
+        NavigationManager.NavigateTo("foodlist");
+    }
 }
