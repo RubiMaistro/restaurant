@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant_WebApiServer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant_EmployeeWebClient", "Restaurant_EmployeeWebClient\Restaurant_EmployeeWebClient.csproj", "{F8E236B2-6D32-49AA-B12A-F128ECC0A33D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant_CustomerWebClient", "Restaurant_CustomerWebClient\Restaurant_CustomerWebClient.csproj", "{38FB54B9-0012-4B01-82BF-4F676BCB36FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant_CustomerWebClient", "Restaurant_CustomerWebClient\Restaurant_CustomerWebClient.csproj", "{38FB54B9-0012-4B01-82BF-4F676BCB36FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

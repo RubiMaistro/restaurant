@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Radzen.Blazor" Version="3.16.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\Restaurant_Common\Restaurant_Common.csproj" /> 
+  </ItemGroup>
+
 </Project>

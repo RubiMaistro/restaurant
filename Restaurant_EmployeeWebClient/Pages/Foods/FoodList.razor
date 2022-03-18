@@ -1,0 +1,51 @@
+﻿@page "/foodlist"
+
+@using Radzen
+
+<PageTitle>Menü</PageTitle>
+
+<h1>Étel Menü</h1>
+
+@if (Foods == null)
+{
+    <RadzenCard>
+        <h2>Loading...</h2>
+    </RadzenCard>
+}
+else
+{
+    <RadzenCard class="p-4">
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Foods" PageSize="10" >
+            <Template Context="Food">
+                <RadzenCard class="p-2" Style="width: 100%">
+                    <div class="row">
+                        <div class="d-flex flex-row align-items-center">
+                            <RadzenImage Path="images/default.jpg" Class="rounded-circle float-left mr-3" 
+                                Style="height: 70px;" />
+                            <div class="row">
+                                <h4 class="mb-0 pb-2">@(Food.Name)</h4>
+                                <p class="ml-4 mr-4 p-2">@(Food.Description)</p>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="col-2 justify-content-center" style="width: 60%">
+                                <h4>Alapanyagok</h4>
+                                <div class="d-flex flex-row p-2" >
+                                    <div>Items</div>
+                                    <div>Items</div>
+                                    <div>Items</div>
+                                    <div>Items</div>
+                                </div>
+                            </div>
+                            <div class="col-2 justify-content-center" style="width: 30%">
+                                <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Class="price-badge just" 
+                                    Text=@($"{String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", Food.Price)}") />
+                                <RadzenButton Text="Kosárba" Class="w-100" />
+                            </div>
+                        </div>
+                    </div>
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+    </RadzenCard>
+}
