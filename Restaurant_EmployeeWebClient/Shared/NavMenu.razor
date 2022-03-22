@@ -1,39 +1,23 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Restaurant_EmployeeWebClient</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿@using Data
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="foodlist" >
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Étel Lista
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="addfood" >
-                <span class="oi oi-plus" aria-hidden="true"></span> Új étel
-            </NavLink>
-        </div>
-    </nav>
-</div>
+@inject NavigationManager NavMan
+
+<RadzenCard Style="margin-bottom: 200px; width: fit-content; min-width: 200px;" Class="mt-3 mx-auto">
+    <RadzenMenu>
+        <RadzenMenuItem Text="Kezdőlap" Path="/" Icon="home"></RadzenMenuItem>
+        <RadzenMenuItem Text="Listák" Icon="segment">
+            <RadzenMenuItem Text="Ételek" Path="food/list" Icon="lunch_dining"></RadzenMenuItem>
+            <RadzenMenuItem Text="Tipusok" Path="food/type/list" Icon="restaurant"></RadzenMenuItem>
+            <RadzenMenuItem Text="Rendelések" Path="order/list" Icon="list_alt"></RadzenMenuItem>
+        </RadzenMenuItem>
+        <RadzenMenuItem Text="Hozzáadás" Icon="add_circle_outline">
+            <RadzenMenuItem Text="Étel" Path="food/add" Icon="lunch_dining"></RadzenMenuItem>
+            <RadzenMenuItem Text="Tipus" Path="food/type/add" Icon="restaurant"></RadzenMenuItem>
+        </RadzenMenuItem>
+        <RadzenMenuItem Text="Napi menü" Path="food/daily_menu" Icon="fastfood"></RadzenMenuItem>
+    </RadzenMenu>
+</RadzenCard>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+ 
 }
