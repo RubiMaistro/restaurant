@@ -1,5 +1,28 @@
 ﻿@page "/food/type/add"
 
-@code {
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
+<PageTitle>Étel tipus</PageTitle>
+
+
+<RadzenCard class="m-4 m-auto px-4" Style="width: 50%">
+    <h1>Étel hozzáadása</h1>
+    <EditForm Model="@Type" OnValidSubmit="@AddNewFoodType">
+    <RadzenCard>
+        <h4 class="mb-4"style="width: fit-content">Étel tipus neve</h4>
+        <RadzenTextBox Class="w-100" @bind-Value="@Type.Name" />
+    </RadzenCard>
+    <button type="submit" class="btn btn-primary">Hozzáad</button>
+</EditForm>
+</RadzenCard>
+
+@code {
+    public FoodType Type { get; set; } = new FoodType();
+
+    private async Task AddNewFoodType()
+    {
+        await HttpClient.PostAsJsonAsync("food/type", Type);
+        NavigationManager.NavigateTo("food/type/list");
+    }
 }

@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Restaurant_EmployeeWebClient.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,36 @@
 ﻿@page "/food/type/list"
 
-@code {
+@inject HttpClient HttpClient
 
+<PageTitle>Tipus lista</PageTitle>
+
+<RadzenCard class="m-4 m-auto px-4">
+    <h1>Étel tipus lista</h1>
+    @if(FoodTypes == null)
+    {
+        <RadzenCard>
+            <h2>Loading...</h2>
+        </RadzenCard>
+    }
+    else
+    {
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@FoodTypes" PageSize="10" >
+            <Template Context="FoodType">
+                <RadzenCard Style="width: fit-content; font-weight:400;">
+                    <h2>@(FoodType.Name)</h2>
+                    <a href="@($"food/type/{FoodType.Id}/edit")">Szerkeszt</a>
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+    }
+</RadzenCard>
+
+
+@code {
+    public IList<FoodType>? FoodTypes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
+    }
 }

@@ -16,6 +16,8 @@ namespace Restaurant_Common.Models
         [Required]
         public string? Name { get; set; }
 
+        public FoodType() { }
+
         public FoodType(string name)
         {
             Name = name;
