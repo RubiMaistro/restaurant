@@ -1,0 +1,25 @@
+﻿<RadzenCard class="m-4 m-auto px-4" Style="width: 50%">
+    <h2>@CompTitle</h2>
+    <EditForm Model="@Type" OnValidSubmit="@SubmitForm">
+        <RadzenCard>
+            <RadzenTextBox Placeholder="Irja be az étel tipus nevét" Class="w-100" @bind-Value="@Type.Name" />
+        </RadzenCard>
+        <button type="submit" class="btn btn-primary m-auto mt-4">@ButtonTitle</button>
+    </EditForm> 
+</RadzenCard>
+
+@code {
+
+    [Parameter]
+    public FoodType Type { get; set; }
+
+    [Parameter]
+    public Func<Task> SubmitForm { get; set; }
+
+    [Parameter]
+    public string ButtonTitle { get; set; }
+
+    [Parameter]
+    public string CompTitle  { get; set; }
+
+}

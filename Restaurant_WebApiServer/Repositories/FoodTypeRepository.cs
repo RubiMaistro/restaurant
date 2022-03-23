@@ -34,22 +34,13 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public static bool UpdateFoodType(FoodType type, long id)
+        public static void UpdateFoodType(FoodType type)
         {
             using (var database = new RestaurantDbContext())
             {
-                var dbType = database.FoodTypes.Where(type => type.Id == id).FirstOrDefault();
+                database.FoodTypes.Update(type);
 
-                if (dbType != null)
-                {
-                    database.FoodTypes.Update(type);
-
-                    database.SaveChanges();
-
-                    return true;
-                }
-
-                return false;
+                database.SaveChanges();
             }
         }
 

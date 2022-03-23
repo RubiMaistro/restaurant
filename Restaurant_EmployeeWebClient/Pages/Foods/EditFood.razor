@@ -9,32 +9,32 @@
 }
 else
 {
-    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditFood" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
+    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditingFood" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
     <button type="button" class="btn btn-danger mt-2" @onclick="@DeleteFood">Delete</button>
 }
 
 @code{
 
-        [Parameter]
-        public string FoodId { get; set; }
+    [Parameter]
+    public string FoodId { get; set; }
 
-        public Food Food { get; set; }
+    public Food Food { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            Food = await HttpClient.GetFromJsonAsync<Food>($"food/{FoodId}");
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        Food = await HttpClient.GetFromJsonAsync<Food>($"food/{FoodId}");
+    }
 
-        private async Task EditFood()
-        {
-            await HttpClient.PutAsJsonAsync($"food/{FoodId}", Food);
-            NavigationManager.NavigateTo($"food/list");
-        }
+    private async Task EditingFood()
+    {
+        await HttpClient.PutAsJsonAsync($"food/{FoodId}", Food);
+        NavigationManager.NavigateTo($"food/list");
+    }
 
-        private async Task DeleteFood()
-        {
-            await HttpClient.DeleteAsync($"food/{FoodId}");
-            NavigationManager.NavigateTo("food/list");
-        }
+    private async Task DeleteFood()
+    {
+        await HttpClient.DeleteAsync($"food/{FoodId}");
+        NavigationManager.NavigateTo("food/list");
+    }
 
 }

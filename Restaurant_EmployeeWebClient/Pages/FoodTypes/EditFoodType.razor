@@ -1,0 +1,38 @@
+﻿@page "/food/type/{FoodTypeId}/edit"
+
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@if (Type == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FoodTypeForm ButtonTitle="Szerkesztés" SubmitForm="@EditingFoodType" Type="@Type" CompTitle="Étel tipus szerkesztése" />
+}
+
+@code{
+
+    [Parameter]
+    public string FoodTypeId { get; set; }
+
+    public FoodType Type { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Type = await HttpClient.GetFromJsonAsync<FoodType>($"food/type/{FoodTypeId}");
+    }
+
+    private async Task EditingFoodType()
+    {
+        await HttpClient.PutAsJsonAsync($"food/type/{FoodTypeId}", Type);
+        NavigationManager.NavigateTo($"food/type/list");
+    }
+
+    private async Task DeleteFoodType()
+    {
+        await HttpClient.DeleteAsync($"food/type/{FoodTypeId}");
+        NavigationManager.NavigateTo("food/type/list");
+    }
+}
