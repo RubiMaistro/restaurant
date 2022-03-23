@@ -1,27 +1,12 @@
 ﻿@page "/food/{FoodId}/edit"
 
-<style>
-    .main-title {
-        text-align: center;
-        margin-bottom: 1.2em;
-    }
-</style>
-
-<h1 class="row main-title">
-    Szerkesztő
-    <NavLink class="ml-auto mr-4 nav-link" href="foodlist">
-        Back
-        <span class="oi oi-arrow-right" aria-hidden="true"></span>
-    </NavLink>
-</h1>
-
 @if (Food == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditCustomerOrder" Food="@Food"></FoodForm>
+    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditCustomerOrder" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
     <button type="button" class="btn btn-danger mt-2" @onclick="@DeleteCustomerOrder">Delete</button>
 }
 
@@ -47,13 +32,13 @@ else
         private async Task EditCustomerOrder()
         {
             await HttpClient.PutAsJsonAsync($"food/{FoodId}", Food);
-            NavigationManager.NavigateTo($"food/{FoodId}");
+            NavigationManager.NavigateTo($"food/list");
         }
 
         private async Task DeleteCustomerOrder()
         {
             await HttpClient.DeleteAsync($"food/{FoodId}");
-            NavigationManager.NavigateTo("food");
+            NavigationManager.NavigateTo("food/list");
         }
 
 }

@@ -47,9 +47,16 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(Food food, long id)
         {
-            return FoodRepository.UpdateFood(food, id)
-                ? Ok($"{food.Name} food updating successful!")
-                : NotFound("Food not found!");
+            var FoodFromDb = FoodRepository.GetFoodById(id);
+
+            if (FoodFromDb != null)
+            {
+                FoodRepository.UpdateFood(food);
+
+                return Ok($"{food.Name} food updating successful!");
+            }
+
+            return NotFound("Food not found!");
         }
 
         [HttpDelete("{id}")]

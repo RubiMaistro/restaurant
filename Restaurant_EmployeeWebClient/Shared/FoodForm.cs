@@ -13,5 +13,8 @@ namespace Restaurant_EmployeeWebClient.Shared
 
         [Parameter]
         public string ButtonTitle { get; set; }
+
+        [Parameter]
+        public string CompTitle { get; set; }
     }
 }

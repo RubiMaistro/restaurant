@@ -3,16 +3,7 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<style>
-    .page-title {
-        text-align: center;
-        margin-bottom: 1.2em;
-    }
-</style>
-
-<h1 class="page-title">Étel létrehozása</h1>
-
-<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewFood" Food="@Food"></FoodForm>
+<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewFood" Food="@Food" CompTitle="Étel létrehozása"></FoodForm>
 
 @code {
 

@@ -44,14 +44,6 @@ namespace Restaurant_WebApiServer.Controllers
             return Ok($"The '{order.Id}' id of food adding successful!");
         }
 
-        [HttpPut("{id}")]
-        public ActionResult Put(Food food, long id)
-        {
-            return FoodRepository.UpdateFood(food, id)
-                ? Ok($"The '{food.Name}' id of order updating successful!")
-                : NotFound("Order not found!");
-        }
-
         [HttpDelete("{id}")]
         public ActionResult Delete(long id)
         {
