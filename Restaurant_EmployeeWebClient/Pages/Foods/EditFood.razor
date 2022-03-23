@@ -1,22 +1,19 @@
 ﻿@page "/food/{FoodId}/edit"
 
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
 @if (Food == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditCustomerOrder" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
-    <button type="button" class="btn btn-danger mt-2" @onclick="@DeleteCustomerOrder">Delete</button>
+    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditFood" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
+    <button type="button" class="btn btn-danger mt-2" @onclick="@DeleteFood">Delete</button>
 }
 
 @code{
-
-        [Inject]
-        public HttpClient HttpClient { get; set; }
-
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
 
         [Parameter]
         public string FoodId { get; set; }
@@ -26,16 +23,15 @@ else
         protected override async Task OnInitializedAsync()
         {
             Food = await HttpClient.GetFromJsonAsync<Food>($"food/{FoodId}");
-            await base.OnInitializedAsync();
         }
 
-        private async Task EditCustomerOrder()
+        private async Task EditFood()
         {
             await HttpClient.PutAsJsonAsync($"food/{FoodId}", Food);
             NavigationManager.NavigateTo($"food/list");
         }
 
-        private async Task DeleteCustomerOrder()
+        private async Task DeleteFood()
         {
             await HttpClient.DeleteAsync($"food/{FoodId}");
             NavigationManager.NavigateTo("food/list");
