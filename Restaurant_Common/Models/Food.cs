@@ -21,15 +21,18 @@ namespace Restaurant_Common.Models
         public string Description { get; set; }
         [Required]
         public int Price { get; set; }
+        [Required]
+        public string ImageUrl { get; set; }
 
         public Food() { }
-        public Food(int id, int foodTypeId, string name, string description, int price)
+        public Food(int id, int foodTypeId, string name, string description, int price, string image)
         {
             Id = id;
             FoodTypeId = foodTypeId;
             Name = name;
             Description = description;
             Price = price;
+            ImageUrl = image;
         }
 
     }

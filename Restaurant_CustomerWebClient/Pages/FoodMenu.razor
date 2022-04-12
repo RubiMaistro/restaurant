@@ -13,17 +13,12 @@
 }
 else
 {
-    <RadzenTabs TabPosition="TabPosition.Top" style="height: fit-content; width: fit-content; margin: 40px auto;" RenderMode="TabRenderMode.Server" >
+    <RadzenTabs TabPosition="TabPosition.Top" style="height: fit-content; width: fit-content; margin: 40px auto;" 
+        RenderMode="TabRenderMode.Server" Change="@SelectedIndexMethod" >
         <Tabs>
             @foreach(var type in FoodTypes)
             {
-                <RadzenTabsItem Text="@type.Name">
-                    <RadzenCard>
-                        <h1>@type.Name</h1>
-                    </RadzenCard>
-                </RadzenTabsItem>
-            }
-            <RadzenTabsItem Text="Orders">
+            <RadzenTabsItem Text="@type.Name">
                 <RadzenCard class="p-4">
                     <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Foods" PageSize="10" >
                         <Template Context="Food">
@@ -59,6 +54,7 @@ else
                     </RadzenDataList>
                 </RadzenCard>
             </RadzenTabsItem>
+            }
         </Tabs>
     </RadzenTabs>
 }

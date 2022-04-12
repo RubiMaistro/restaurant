@@ -3,15 +3,24 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewFood" Food="@Food" CompTitle="Étel létrehozása"></FoodForm>
+<FoodForm ButtonTitle="Hozzáadás" SubmitForm="@AddNewFood" 
+    Food="@Food" FoodTypes="@FoodTypes" CompTitle="Étel létrehozása">
+</FoodForm>
 
 @code {
 
     public Food Food { get; set; } = new Food();
+    public IEnumerable<FoodType> FoodTypes { get; set; } = new List<FoodType>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
+    }
 
     private async Task AddNewFood()
     {
         await HttpClient.PostAsJsonAsync("food", Food);
-        NavigationManager.NavigateTo("foodlist");
+        NavigationManager.NavigateTo("food/list");
     }
+
 }

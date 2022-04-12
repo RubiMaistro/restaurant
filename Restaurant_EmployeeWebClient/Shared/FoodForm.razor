@@ -6,7 +6,7 @@
         <div class="form-group row">
             <label for="firstname" class="col-sm-3">Megnevezése</label>
             <div class="col-sm-6">
-                <InputText id="firstname" class="form-control" @bind-Value="@Food.Name" placeholder="Étel megnevezése"></InputText>
+                <InputText id="name" class="form-control" @bind-Value="@Food.Name" placeholder="Étel megnevezése"></InputText>
                 <ValidationMessage For="() => Food.Name"/>
             </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="form-group row">
             <label for="lastname" class="col-sm-3">Leírás</label>
             <div class="col-sm-6">
-                <InputText id="lastname" class="form-control" @bind-Value="@Food.Description" placeholder="Étel leírása"></InputText>
+                <InputText id="description" class="form-control" @bind-Value="@Food.Description" placeholder="Étel leírása"></InputText>
                 <ValidationMessage For="() => Food.Description"/>
             </div>
         </div>
@@ -22,16 +22,28 @@
         <div class="form-group row">
             <label for="carmodel" class="col-sm-3">Típusa (ez helyett dropdown kell)</label>
             <div class="col-sm-6">
-                <input id="plate_number" class="form-control" value="@Food.FoodTypeId" placeholder="(ide egy dropdown kell)" />
+                <InputSelect @bind-Value="Food.FoodTypeId" class="form-control">
+                    @foreach (var type in @FoodTypes)
+                        {
+                        <option value="@type.Id">@type.Name</option>
+                        }
+                </InputSelect>  
                 <ValidationMessage For="() => Food.FoodTypeId"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="plate_number" class="col-sm-3">Ára</label>
+            <label for="plate_number" class="col-sm-3">Ár (Forintban)</label>
             <div class="col-sm-6">
-                <input id="plate_number" class="form-control" value="@Food.Price" placeholder="Étel ára forintban" />
+                <input id="price" class="form-control" value="@Food.Price" placeholder="Étel ára forintban" />
                 <ValidationMessage For="() => Food.Price"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="image" class="col-sm-3">Kép</label>
+            <div class="col-sm-6">
+                <RadzenUpload Multiple="false" Accept="image/*" Url="wwwroot/images" Progress=@(args => OnProgress(args)) Class="w-100" />
             </div>
         </div>
 

@@ -9,11 +9,20 @@ namespace Restaurant_CustomerWebClient.Pages
         public HttpClient HttpClient { get; set; }
         public List<Food> Foods { get; set; }
         public List<FoodType> FoodTypes { get; set; }
+        public int SelectedFoodTypeId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Foods = await HttpClient.GetFromJsonAsync<List<Food>>("food");
+            var foods = await HttpClient.GetFromJsonAsync<List<Food>>("food");
+
+            Foods = foods.Where(x => x.FoodTypeId == SelectedFoodTypeId).ToList();
+
             FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
+        }
+
+        void SelectedIndexMethod(int index)
+        {
+            SelectedFoodTypeId = index;
         }
     }
 }
