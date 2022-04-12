@@ -4,8 +4,6 @@
 
 <PageTitle>Étel lista</PageTitle>
 
-<h1>Étel lista</h1>
-
 @if (Foods == null)
 {
     <RadzenCard>
@@ -15,6 +13,7 @@
 else
 {
     <RadzenCard class="p-4">
+        <h1>Étel lista</h1>
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Foods" PageSize="10" >
             <Template Context="Food">
                 <RadzenCard class="p-2" Style="width: 100%">
