@@ -45,7 +45,7 @@ else
                                         <div class="col-2 justify-content-center" style="width: 30%">
                                             <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Class="price-badge just" 
                                                 Text=@($"{String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", Food.Price)}") />
-                                            <RadzenButton Text="Kosárba" Class="w-100" />
+                                            <RadzenButton @onclick="@(() => AddToCart(Food))" Text="Kosárba" Class="w-100" />
                                         </div>
                                     </div>
                                 </div>

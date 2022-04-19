@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Restaurant_Common.Models;
+using Restaurant_CustomerWebClient.Data;
 
 namespace Restaurant_CustomerWebClient.Pages
 {
     public partial class FoodMenu
     {
         [Inject]
-        public HttpClient HttpClient { get; set; }
+        StateContainer StateContainer { get; set; }
+        [Inject]
+        HttpClient HttpClient { get; set; }
         public List<Food> Foods { get; set; }
         public List<FoodType> FoodTypes { get; set; }
         public int SelectedFoodTypeId { get; set; }
@@ -23,6 +26,11 @@ namespace Restaurant_CustomerWebClient.Pages
         void SelectedIndexMethod(int index)
         {
             SelectedFoodTypeId = index;
+        }
+
+        void AddToCart(Food food)
+        {
+            StateContainer.Order.Foods.Add(food);
         }
     }
 }
