@@ -19,12 +19,19 @@ namespace Restaurant_EmployeeWebClient.Shared
 
         [Parameter]
         public string CompTitle { get; set; }
-
-        [Parameter]
-        public IEnumerable<FoodType> FoodTypes { get; set; }
+        
+        [Inject]
+        public HttpClient HttpClient { get; set; }
 
         [Inject]
-        public IFileUpload fileUpload { get; set; } 
+        public IFileUpload fileUpload { get; set; }
+
+        public IEnumerable<FoodType> FoodTypes { get; set; } = Enumerable.Empty<FoodType>();
+
+        protected override async Task OnInitializedAsync()
+        {
+            FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
+        }
 
         void OnProgress(UploadProgressArgs args)
         {
@@ -35,7 +42,7 @@ namespace Restaurant_EmployeeWebClient.Shared
             {
                 foreach (var file in args.Files)
                 {
-                    this.Food.ImageUrl = "wwwroot/images/" + file.Name;
+                    this.Food.ImageUrl = "wwwroot/images/default.jpg";
                 }
             }
         }

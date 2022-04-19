@@ -35,7 +35,7 @@
         <div class="form-group row">
             <label for="plate_number" class="col-sm-3">Ár (Forintban)</label>
             <div class="col-sm-6">
-                <input id="price" class="form-control" value="@Food.Price" placeholder="Étel ára forintban" />
+                <RadzenNumeric Placeholder="1500" @bind-Value="@Food.Price" />
                 <ValidationMessage For="() => Food.Price"/>
             </div>
         </div>

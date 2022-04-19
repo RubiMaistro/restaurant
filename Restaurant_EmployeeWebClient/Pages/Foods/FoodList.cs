@@ -6,8 +6,8 @@ namespace Restaurant_EmployeeWebClient.Pages.Foods
     public partial class FoodList
     {
         [Inject]
-        public HttpClient HttpClient { get; set; }
-        public List<Food> Foods { get; set; }
+        public HttpClient? HttpClient { get; set; }
+        public IList<Food>? Foods { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
