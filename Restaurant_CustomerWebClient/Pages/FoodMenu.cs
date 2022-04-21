@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Radzen;
 using Restaurant_Common.Models;
 using Restaurant_CustomerWebClient.Data;
@@ -10,11 +11,11 @@ namespace Restaurant_CustomerWebClient.Pages
         [Parameter]
         public string TypeId { get; set; }
         [Inject]
-        StateContainer StateContainer { get; set; }
-        [Inject]
         HttpClient HttpClient { get; set; }
         [Inject]
         NotificationService NotificationService { get; set; }
+        [Inject]
+        ProtectedLocalStorage BrowserStorage { get; set; }
         public List<Food>? Foods { get; set; }
         public FoodType? FoodType { get; set; } = new FoodType();
 
@@ -27,10 +28,15 @@ namespace Restaurant_CustomerWebClient.Pages
             Foods = allFoodsFromDb.Where(x => x.FoodTypeId == FoodType.Id).ToList();
         }
 
-        void AddToCart(Food food)
+        async Task AddToCartAsync(Food food)
         {
-            StateContainer.Instance.Order.Foods.Add(food);
-            StateContainer.Instance.Order.Price += food.Price; 
+            var result = await BrowserStorage.GetAsync<Order>("ShoppingCart");
+            Order ShoppingCart = result.Success ? result.Value : new Order();
+
+            ShoppingCart.Foods.Add(food);
+            ShoppingCart.Price += food.Price;
+
+            BrowserStorage.SetAsync("ShoppingCart", ShoppingCart);
 
             NotificationService.Notify(new NotificationMessage
             {

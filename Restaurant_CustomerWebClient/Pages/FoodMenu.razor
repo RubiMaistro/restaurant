@@ -3,9 +3,10 @@
 
 <PageTitle>Menü</PageTitle>
 
-<RadzenCard class="d-flex flex-column align-items-start" Style="color: black">
-    <RadzenCard class="position-fixed px-4" Style="width: fit-content; z-index: 1; border-radius: 0 15px 30px 0; opacity: 0.9; color: white; background-color: cornflowerblue">
-        <h1 class="mt-4" style="font-weight: 600">@FoodType.Name</h1>
+<RadzenCard class="d-flex flex-column align-items-start mb-4" Style="color: black; background-color: rebeccapurple; border: none; border-radius: 50px;">
+    <RadzenCard class="position-fixed px-4" 
+        Style="width: fit-content; z-index: 1; border: none; border-radius: 50px 50px 50px 0; color: white; background-color:rebeccapurple">
+        <h1 class="mt-2" style="font-weight: 600">@FoodType.Name</h1>
     </RadzenCard>
 
 @if(Foods == null)
@@ -17,24 +18,24 @@
 }
 else 
 {
-    <div class="container">
+    <div class="container" >
         <div class="row py-5 mt-5">
             <div class="col">
                 @if(Foods.Count == 0)
                 {
-                   <RadzenLabel class="m-4 p-4" Style="width: fit-content; font-size: xx-large;" Text="Nincs megjeleníthető adat..."></RadzenLabel>
+                   <RadzenLabel class="m-4 p-4" Style="width: fit-content; font-size: xx-large; background-color: white; border-radius: 10px" Text="Nincs megjeleníthető adat..."></RadzenLabel>
                 }
                 else
                 {
                     <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Foods" TItem="Food" PageSize="10" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
                         <Template Context="food">
-                            <RadzenCard Style="width: fit-content; margin: 1.5rem; overflow: hidden;">
+                            <RadzenCard Style="width: fit-content; border: none; margin: 1.5rem; overflow: hidden; border-radius: 10px">
                                 <div class="container">
                                     <div class="row">
                                         <div class="column d-flex justify-content-between align-content-center">
                                             <div class="m-4">
                                                 <RadzenImage Path="images/default.jpg" Class="rounded-circle float-left" 
-                                                    Style="height: 150px; border-radius: 10px" />
+                                                    Style="height: 165px" />
                                             </div>
                                             <div class="row">
                                                 <div style="font-size: xx-large">
@@ -50,7 +51,7 @@ else
                                                     <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Style="font-size: x-large" Class="price-badge" Text=@($"{String.Format(new System.Globalization.CultureInfo("hu-HU"), "{0:C}", food.Price)}") />
                                                 </div>
                                                 <div>
-                                                    <RadzenButton Text="Megrendelés" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
+                                                    <RadzenButton Text="Megrendelés" @onclick="() => AddToCartAsync(food)" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
                                                 </div>
                                             </div>
                                         </div>
