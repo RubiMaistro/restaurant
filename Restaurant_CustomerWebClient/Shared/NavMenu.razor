@@ -1,39 +1,33 @@
+﻿@inject NavigationManager NavigationMan
+@inject HttpClient HttpClient
+
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Restaurant_CustomerWebClient</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        <a class="navbar-brand" style="font-size: x-large" href="">Menu</a>
+        <button title="Navigation menu" class="navbar-toggler">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+<div>
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="foodmenu">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Menu
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="shoppingcart">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Cart
-            </NavLink>
-        </div>
+        @foreach(var type in FoodTypes)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" style="font-size: large" href="@($"/foodmenu/{type.Id}")" Match="NavLinkMatch.All">
+                    <RadzenIcon Icon="" /> @type.Name 
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    public List<FoodType> FoodTypes { get; set; } = new List<FoodType>();
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
     }
 }

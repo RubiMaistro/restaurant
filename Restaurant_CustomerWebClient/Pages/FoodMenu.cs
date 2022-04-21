@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using Restaurant_Common.Models;
 using Restaurant_CustomerWebClient.Data;
 
@@ -6,31 +7,39 @@ namespace Restaurant_CustomerWebClient.Pages
 {
     public partial class FoodMenu
     {
+        [Parameter]
+        public string TypeId { get; set; }
         [Inject]
         StateContainer StateContainer { get; set; }
         [Inject]
         HttpClient HttpClient { get; set; }
-        public List<Food> Foods { get; set; }
-        public List<FoodType> FoodTypes { get; set; }
-        public int SelectedFoodTypeId { get; set; }
+        [Inject]
+        NotificationService NotificationService { get; set; }
+        public List<Food>? Foods { get; set; }
+        public FoodType? FoodType { get; set; } = new FoodType();
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
-            var foods = await HttpClient.GetFromJsonAsync<List<Food>>("food");
+            FoodType = await HttpClient.GetFromJsonAsync<FoodType>($"food/type/{int.Parse(TypeId)}");
 
-            Foods = foods.Where(x => x.FoodTypeId == SelectedFoodTypeId).ToList();
+            var allFoodsFromDb = await HttpClient.GetFromJsonAsync<List<Food>>("food");
 
-            FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
-        }
-
-        void SelectedIndexMethod(int index)
-        {
-            SelectedFoodTypeId = index;
+            Foods = allFoodsFromDb.Where(x => x.FoodTypeId == FoodType.Id).ToList();
         }
 
         void AddToCart(Food food)
         {
-            StateContainer.Order.Foods.Add(food);
+            StateContainer.Instance.Order.Foods.Add(food);
+            StateContainer.Instance.Order.Price += food.Price; 
+
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Sikeres hozzáadás!",
+                Detail = $"Az {food.Name} hozzáadva a rendeléshez!",
+                Duration = 6000
+            });
+
         }
     }
 }
