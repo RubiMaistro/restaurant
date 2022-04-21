@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restaurant_Common.Models
 {
@@ -18,13 +13,12 @@ namespace Restaurant_Common.Models
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
         [Required]
-        public OrderStatus Status { get; set; } 
+        public OrderStatus Status { get; set; }
 
-        public IList<Food> Foods { get; set; }
+        public IList<Food> Foods { get; set; } = new List<Food>();
 
-        public Order(double price)
+        public Order()
         {
-            Price = price;
             CreatedDate = DateTime.Now;
             Status = OrderStatus.Recorded;
             Foods = new List<Food>();

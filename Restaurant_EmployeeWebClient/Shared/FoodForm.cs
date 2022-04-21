@@ -1,8 +1,8 @@
 ﻿using BlazorInputFile;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Radzen;
 using Restaurant_Common.Models;
-using Restaurant_EmployeeWebClient.Services;
 
 namespace Restaurant_EmployeeWebClient.Shared
 {
@@ -23,8 +23,6 @@ namespace Restaurant_EmployeeWebClient.Shared
         [Inject]
         public HttpClient HttpClient { get; set; }
 
-        [Inject]
-        public IFileUpload fileUpload { get; set; }
 
         public IEnumerable<FoodType> FoodTypes { get; set; } = Enumerable.Empty<FoodType>();
 
@@ -33,7 +31,7 @@ namespace Restaurant_EmployeeWebClient.Shared
             FoodTypes = await HttpClient.GetFromJsonAsync<List<FoodType>>("food/type");
         }
 
-        void OnProgress(UploadProgressArgs args)
+        async Task OnProgress(UploadProgressArgs args)
         {
             var info = $"% / {args.Loaded} of {args.Total} bytes.";
             var progress = args.Progress;
@@ -42,16 +40,10 @@ namespace Restaurant_EmployeeWebClient.Shared
             {
                 foreach (var file in args.Files)
                 {
-                    this.Food.ImageUrl = "wwwroot/images/default.jpg";
-                }
-            }
-        }
+                    this.Food.ImageUrl = file.Name;
 
-        async Task CachingImage(IFileListEntry file)
-        {
-            if (file != null)
-            {
-                await fileUpload.Upload(file);
+                    await HttpClient.PostAsJsonAsync<FormFile>($"file/{file}", (FormFile) file);
+                }
             }
         }
 

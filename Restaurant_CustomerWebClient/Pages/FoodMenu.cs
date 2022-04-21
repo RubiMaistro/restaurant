@@ -18,9 +18,12 @@ namespace Restaurant_CustomerWebClient.Pages
         ProtectedLocalStorage BrowserStorage { get; set; }
         public List<Food>? Foods { get; set; }
         public FoodType? FoodType { get; set; } = new FoodType();
+        public string ImageServervicePath { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
+            ImageServervicePath = "https://localhost:7000/api/file";
+
             FoodType = await HttpClient.GetFromJsonAsync<FoodType>($"food/type/{int.Parse(TypeId)}");
 
             var allFoodsFromDb = await HttpClient.GetFromJsonAsync<List<Food>>("food");

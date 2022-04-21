@@ -13,11 +13,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Restaurant_Common\Restaurant_Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UploadFiles\images\" />
   </ItemGroup>
 
 </Project>
