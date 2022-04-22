@@ -10,20 +10,14 @@ namespace Restaurant_EmployeeWebClient.Shared
     {
         [Parameter]
         public Food Food { get; set; }
-
         [Parameter]
         public Func<Task> SubmitForm { get; set; }
-
         [Parameter]
         public string ButtonTitle { get; set; }
-
         [Parameter]
         public string CompTitle { get; set; }
-        
         [Inject]
         public HttpClient HttpClient { get; set; }
-
-
         public IEnumerable<FoodType> FoodTypes { get; set; } = Enumerable.Empty<FoodType>();
 
         protected override async Task OnInitializedAsync()

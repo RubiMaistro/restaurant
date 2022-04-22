@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group row">
-            <label for="carmodel" class="col-sm-3">Típusa (ez helyett dropdown kell)</label>
+            <label for="carmodel" class="col-sm-3">Típus</label>
             <div class="col-sm-6">
                 <InputSelect @bind-Value="Food.FoodTypeId" class="form-control">
                     @foreach (var type in @FoodTypes)
@@ -33,10 +33,10 @@
         </div>
 
         <div class="form-group row">
-            <label for="plate_number" class="col-sm-3">Ár (Forintban)</label>
+            <label for="plate_number" class="col-sm-3">Ár</label>
             <div class="col-sm-6">
                 <RadzenNumeric Placeholder="1500" @bind-Value="@Food.Price" />
-                <ValidationMessage For="() => Food.Price"/>
+                <ValidationMessage For="() => Food.Price"/> Forint
             </div>
         </div>
 

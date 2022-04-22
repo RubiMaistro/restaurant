@@ -9,8 +9,10 @@
 }
 else
 {
-    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditingFood" Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
-    <button type="button" class="btn btn-danger mt-2" @onclick="@DeleteFood">Delete</button>
+    <FoodForm ButtonTitle="Szerkesztés" SubmitForm="@EditingFood" 
+        Food="@Food" CompTitle="Étel szerkesztése"></FoodForm>
+    <button type="button" class="btn btn-danger mt-2" 
+        @onclick="@DeleteFood">Delete</button>
 }
 
 @code{

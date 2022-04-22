@@ -40,11 +40,6 @@ else
         Cart = result.Success ? result.Value : new Order();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        
-    }
-
     private async Task DeleteProduct(int productId)
     {
         foreach(var food in Cart.Foods)
