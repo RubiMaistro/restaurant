@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Radzen;
 using Restaurant_Common.Models;
-using Restaurant_CustomerWebClient.Data;
 
 namespace Restaurant_CustomerWebClient.Pages
 {
@@ -39,6 +38,7 @@ namespace Restaurant_CustomerWebClient.Pages
             ShoppingCart.Foods.Add(food);
             ShoppingCart.Price += food.Price;
 
+            BrowserStorage.DeleteAsync("ShoppingCart");
             BrowserStorage.SetAsync("ShoppingCart", ShoppingCart);
 
             NotificationService.Notify(new NotificationMessage
@@ -46,7 +46,7 @@ namespace Restaurant_CustomerWebClient.Pages
                 Severity = NotificationSeverity.Success,
                 Summary = "Sikeres hozzáadás!",
                 Detail = $"Az {food.Name} hozzáadva a rendeléshez!",
-                Duration = 6000
+                Duration = 5000
             });
 
         }

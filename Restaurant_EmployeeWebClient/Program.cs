@@ -1,33 +1,44 @@
-using Restaurant_EmployeeWebClient.Data;
-using Restaurant_EmployeeWebClient.Services;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-
-// Initialize base uri addres of web API server
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7000/api/") });
-builder.Services.AddScoped<IFileUpload, FileUpload>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace Restaurant_EmployeeWebClient
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            AddServices(builder.Services);
+            
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.MapBlazorHub();
+            app.MapFallbackToPage("/_Host");
+
+            app.Run();
+        }
+
+        private static void AddServices(IServiceCollection services)
+        {
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+
+            // Initialize base uri addres of web API server
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7000/api/") });
+
+        }
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-
-app.Run();

@@ -42,7 +42,7 @@ namespace Restaurant_EmployeeWebClient.Shared
                 {
                     this.Food.ImageUrl = file.Name;
 
-                    await HttpClient.PostAsJsonAsync<FormFile>($"file/{file}", (FormFile) file);
+                    //await HttpClient.PostAsJsonAsync<FormFile>($"file/{file}", (FormFile) file);
                 }
             }
         }

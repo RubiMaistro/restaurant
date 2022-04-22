@@ -6,10 +6,8 @@
 @inject NavigationManager NavigationManager
 @inject ProtectedLocalStorage BrowserStorage
 @inject NotificationService NotificationService
-@inject IJSRuntime JSRuntime
 
 <h3>ShoppingCart</h3>
-
 
 @if (Cart == null)
 {
@@ -38,13 +36,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Cart = new Order();
+        var result = await BrowserStorage.GetAsync<Order>("ShoppingCart");
+        Cart = result.Success ? result.Value : new Order();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var result = await BrowserStorage.GetAsync<Order>("ShoppingCart");
-        Cart = result.Success ? result.Value : new Order();
+        
     }
 
     private async Task DeleteProduct(int productId)
