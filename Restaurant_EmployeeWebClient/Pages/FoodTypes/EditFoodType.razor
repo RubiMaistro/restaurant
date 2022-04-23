@@ -10,6 +10,8 @@
 else
 {
     <FoodTypeForm ButtonTitle="Szerkesztés" SubmitForm="@EditingFoodType" Type="@Type" CompTitle="Étel tipus szerkesztése" />
+    <button type="button" class="btn btn-danger mt-2" 
+        @onclick="@DeleteFoodType">Delete</button>
 }
 
 @code{
