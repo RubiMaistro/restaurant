@@ -8,6 +8,7 @@ namespace Restaurant_WebApiServer.Repositories
         public DbSet<Food>? Foods { get; set; }
         public DbSet<FoodType>? FoodTypes { get; set; }
         public DbSet<Order>? Orders { get; set; }
+        public DbSet<OrderedFood>? OrderedFoods { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

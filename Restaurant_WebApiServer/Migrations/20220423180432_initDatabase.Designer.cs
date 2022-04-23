@@ -12,8 +12,8 @@ using Restaurant_WebApiServer.Repositories;
 namespace Restaurant_WebApiServer.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20220419100751_addFoodImageColumn")]
-    partial class addFoodImageColumn
+    [Migration("20220423180432_initDatabase")]
+    partial class initDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,10 +47,15 @@ namespace Restaurant_WebApiServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Foods");
                 });
@@ -114,6 +119,18 @@ namespace Restaurant_WebApiServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderedFoods");
+                });
+
+            modelBuilder.Entity("Restaurant_Common.Models.Food", b =>
+                {
+                    b.HasOne("Restaurant_Common.Models.Order", null)
+                        .WithMany("Foods")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("Restaurant_Common.Models.Order", b =>
+                {
+                    b.Navigation("Foods");
                 });
 #pragma warning restore 612, 618
         }

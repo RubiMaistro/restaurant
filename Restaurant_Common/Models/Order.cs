@@ -15,13 +15,10 @@ namespace Restaurant_Common.Models
         [Required]
         public OrderStatus Status { get; set; }
 
-        public IList<Food> Foods { get; set; } = new List<Food>();
-
         public Order()
         {
             CreatedDate = DateTime.Now;
             Status = OrderStatus.Recorded;
-            Foods = new List<Food>();
         }
 
     }
