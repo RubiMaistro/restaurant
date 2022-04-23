@@ -52,7 +52,7 @@ else
                                                     <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Style="font-size: x-large" Class="price-badge" Text=@($"{String.Format(new System.Globalization.CultureInfo("hu-HU"), "{0:C}", food.Price)}") />
                                                 </div>
                                                 <div>
-                                                    <RadzenButton Text="Megrendelés" @onclick="() => AddToCartAsync(food)" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
+                                                    <RadzenButton Text="Megrendelés" Click="@(args => AddToCartAsync(food))" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
                                                 </div>
                                             </div>
                                         </div>

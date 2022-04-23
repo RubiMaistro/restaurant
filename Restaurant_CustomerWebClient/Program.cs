@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Radzen;
@@ -41,6 +42,10 @@ namespace Restaurant_CustomerWebClient
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddBlazoredLocalStorage();
+
+            services.AddScoped<ProtectedSessionStorage>();
             services.AddScoped<ProtectedLocalStorage>();
             services.AddScoped<NotificationService>();
 

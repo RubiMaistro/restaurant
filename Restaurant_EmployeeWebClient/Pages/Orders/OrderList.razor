@@ -1,5 +1,58 @@
 ﻿@page "/order/list"
 
+@using Radzen
+
+@inject HttpClient HttpClient
+
+<RadzenCard>
+    <h1>Rendelések lista</h1>
+    @if(OrderModelList == null)
+    {
+        <RadzenCard>
+            <h2>Loading...</h2>
+        </RadzenCard>
+    }
+    else
+    {
+        @foreach(var order in OrderModelList)
+        {
+            <RadzenCard>
+                <h1>@order.Order.Id - @order.Order.Price - @order.Order.Status</h1>
+                @foreach(var food in order.Foods)
+                {
+                    <h1>@food.Name - @food.Price</h1>
+                }
+            </RadzenCard>
+        }
+    }
+</RadzenCard>
+
+
 @code {
 
+    public List<Order> Orders { get; set; }
+    public List<ShoppingCartModel> OrderModelList { get; set; } = new List<ShoppingCartModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Orders = await HttpClient.GetFromJsonAsync<List<Order>>("order");
+
+        foreach(var order in Orders)
+        {
+            ShoppingCartModel orderModel = new ShoppingCartModel();
+            var allOrdersFromDb = await HttpClient.GetFromJsonAsync<List<OrderedFood>>("food/ordered");
+            var allFoodsFromDb = await HttpClient.GetFromJsonAsync<List<Food>>("food");
+
+            orderModel.Order = order;
+            var orderedFoods = allOrdersFromDb.Where(x => x.OrderId == order.Id).ToList();
+
+            foreach(var orderedFood in orderedFoods)
+            {
+                var food = await HttpClient.GetFromJsonAsync<Food>($"food/{orderedFood.FoodId}");
+                orderModel.Foods.Add(food);
+            }
+
+            OrderModelList.Add(orderModel);
+        }
+    }
 }

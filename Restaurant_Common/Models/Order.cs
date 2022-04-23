@@ -17,6 +17,7 @@ namespace Restaurant_Common.Models
 
         public Order()
         {
+            Price = 0;
             CreatedDate = DateTime.Now;
             Status = OrderStatus.Recorded;
         }

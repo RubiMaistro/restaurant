@@ -1,3 +1,5 @@
+using Radzen;
+
 namespace Restaurant_EmployeeWebClient
 {
     public class Program
@@ -35,6 +37,7 @@ namespace Restaurant_EmployeeWebClient
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<NotificationService>();
 
             // Initialize base uri addres of web API server
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7000/api/") });

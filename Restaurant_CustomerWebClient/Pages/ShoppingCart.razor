@@ -3,31 +3,50 @@
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using Restaurant_CustomerWebClient.Data
 
+@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-@inject ProtectedLocalStorage BrowserStorage
+@inject ProtectedSessionStorage BrowserStorage
 @inject NotificationService NotificationService
 
-<h3>ShoppingCart</h3>
-
-@if (Cart == null)
-{
-    <RadzenCard>
-        <h4 class="mb-4">Loading...</h4>
-        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
-    </RadzenCard>
-}
-else
-{
-    @foreach(var food in Cart.Foods)
+<RadzenCard class="d-flex justify-content-center align-content-center mx-auto p-4" 
+    Style="color:black; background-color:rebeccapurple; width:fit-content; border:none; border-radius:20px;">
+    
+    @if (Cart == null)
     {
-        <RadzenLabel Text="@food.Name" />
+        <RadzenCard>
+            <h4 class="mb-4">Loading...</h4>
+            <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenCard>
     }
-}    
+    else
+    {
+        if(Cart.Foods.Count == 0)
+        {
+            <RadzenLabel class="m-4 p-4" Style="width:fit-content; font-size:xx-large; border-radius: 10px" 
+                Text="A bevásárlókosár üres..."></RadzenLabel>
+        }
+        else
+        {
+            @foreach (var food in Cart.Foods)
+            {
+                <RadzenCard Style="color:black">
+                    <h2 style="font-size:xx-large; font-weight:600;">@food.Name</h2>
+                </RadzenCard>
+            }
+            <h1>@Cart.Order.Price</h1>
+
+            <RadzenButton Text="Megrendelés" Click="@SubmitOrder" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
+        
+            <OrderNumber Number="@OrderNumber" />
+        }
+    }    
+</RadzenCard>
 
 @code {
 
     public double PriceSummary { get; set; }
-    public Order Cart { get; set; }
+    public ShoppingCartModel Cart { get; set; }
+    public int OrderNumber { get; set; }
 
     protected override Task OnParametersSetAsync()
     {
@@ -36,8 +55,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await BrowserStorage.GetAsync<Order>("ShoppingCart");
-        Cart = result.Success ? result.Value : new Order();
+        var result = await BrowserStorage.GetAsync<ShoppingCartModel>("Cart");
+        Cart = result.Success ? result.Value : new ShoppingCartModel();
     }
 
     private async Task DeleteProduct(int productId)
@@ -47,8 +66,7 @@ else
             if (food.Id == productId)
             {
                 Cart.Foods.Remove(food);
-
-                BrowserStorage.SetAsync("ShoppingCart", Cart);
+                BrowserStorage.SetAsync("Cart", Cart);
             }
         }
 
@@ -59,7 +77,29 @@ else
             Detail = $"A termék törlölve!",
             Duration = 6000
         });
-                
+    }
+
+    private async Task SubmitOrder()
+    {
+        // add order
+        await HttpClient.PostAsJsonAsync("order", Cart.Order);
+
+        // add ordered foods
+        foreach(var food in Cart.Foods)
+        {
+            var orders = await HttpClient.GetFromJsonAsync<List<Order>>("order");
+            foreach(var order in orders)
+            {
+                if (order.Equals(Cart.Order))
+                {
+                    await HttpClient.PostAsJsonAsync("food/ordered", new OrderedFood(food.Id, order.Id));
+                }
+            }
+            
+            NavigationManager.NavigateTo("/");
+        }
+
+        OrderNumber = Cart.Order.Id;
     }
 
 }

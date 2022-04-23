@@ -1,7 +1,10 @@
 ﻿@page "/food/{FoodId}/edit"
 
+@using Radzen
+
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject NotificationService NotificationService
 
 @if (Food == null)
 {
@@ -25,12 +28,30 @@ else
     protected override async Task OnInitializedAsync()
     {
         Food = await HttpClient.GetFromJsonAsync<Food>($"food/{FoodId}");
+
+        NotificationService.Notify(new NotificationMessage
+            {
+            Style = "position: absolute; left:100px",
+            Severity = NotificationSeverity.Success,
+            Summary = "Sikeres szerkesztés!",
+            Detail = $"A(z) adatai megváltoztak!",
+            Duration = 10000
+        });
     }
 
     private async Task EditingFood()
     {
         await HttpClient.PutAsJsonAsync($"food/{FoodId}", Food);
         NavigationManager.NavigateTo($"food/list");
+
+        NotificationService.Notify(new NotificationMessage
+            {
+            Style = "position: absolute; left:100px",
+            Severity = NotificationSeverity.Success,
+            Summary = "Sikeres szerkesztés!",
+            Detail = $"A(z) {Food.Name} adatai megváltoztak!",
+            Duration = 5000
+        });
     }
 
     private async Task DeleteFood()

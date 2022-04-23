@@ -14,10 +14,16 @@ namespace Restaurant_CustomerWebClient.Pages
         [Inject]
         NotificationService NotificationService { get; set; }
         [Inject]
-        ProtectedLocalStorage BrowserStorage { get; set; }
+        ProtectedSessionStorage BrowserStorage { get; set; }
         public List<Food>? Foods { get; set; }
         public FoodType? FoodType { get; set; } = new FoodType();
         public string ImageServervicePath { get; set; }
+        public ShoppingCartModel Cart { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            
+        }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -30,16 +36,15 @@ namespace Restaurant_CustomerWebClient.Pages
             Foods = allFoodsFromDb.Where(x => x.FoodTypeId == FoodType.Id).ToList();
         }
 
-        async Task AddToCartAsync(Food food)
+        public async void AddToCartAsync(Food food)
         {
-            var result = await BrowserStorage.GetAsync<Order>("ShoppingCart");
-            Order ShoppingCart = result.Success ? result.Value : new Order();
+            var result = await BrowserStorage.GetAsync<ShoppingCartModel>("Cart");
+            Cart = result.Success ? result.Value : new ShoppingCartModel();
 
-            ShoppingCart.Foods.Add(food);
-            ShoppingCart.Price += food.Price;
+            Cart.Foods.Add(food);
+            Cart.Order.Price += food.Price;
 
-            BrowserStorage.DeleteAsync("ShoppingCart");
-            BrowserStorage.SetAsync("ShoppingCart", ShoppingCart);
+            BrowserStorage.SetAsync("Cart", Cart);
 
             NotificationService.Notify(new NotificationMessage
             {
@@ -48,6 +53,8 @@ namespace Restaurant_CustomerWebClient.Pages
                 Detail = $"Az {food.Name} hozzáadva a rendeléshez!",
                 Duration = 5000
             });
+
+            
 
         }
     }

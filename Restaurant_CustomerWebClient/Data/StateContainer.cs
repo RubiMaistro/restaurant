@@ -5,11 +5,11 @@ namespace Restaurant_CustomerWebClient.Data
     [Serializable]
     public class StateContainer
     {
-        private Order? _order { get; set; }
-        public Order Order
-        {
-            get { return Instance._order; }
-            set { Instance._order = value; NotifyStateChanged(); }
+        private IList<int> _foodIds { get; set; }
+        public IList<int> FoodIds 
+        { 
+            get { return Instance._foodIds; } 
+            set { Instance._foodIds = value; } 
         }
 
         static StateContainer container = new StateContainer();
