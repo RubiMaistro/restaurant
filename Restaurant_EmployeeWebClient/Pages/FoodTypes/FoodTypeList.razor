@@ -1,6 +1,7 @@
 ﻿@page "/food/type/list"
 
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <PageTitle>Tipus lista</PageTitle>
 
@@ -16,9 +17,9 @@
     {
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@FoodTypes" PageSize="10" >
             <Template Context="FoodType">
-                <RadzenCard Style="width: fit-content; font-weight:400;">
-                    <h2>@(FoodType.Name)</h2>
-                    <a href="@($"food/type/{FoodType.Id}/edit")">Szerkeszt</a>
+                <RadzenCard Style="width: fit-content; max-width:20%; background-color:lightgrey; font-weight:400; border-radius:30px">
+                    <h2 class="mx-auto">@(FoodType.Name)</h2>
+                    <RadzenButton Click="@(args => NavigationManager.NavigateTo($"food/type/{FoodType.Id}/edit"))" class="p-2 mx-auto" style="background-color:deepskyblue; border-radius:30px; width:fit-content">Szerkeszt</RadzenButton>
                 </RadzenCard>
             </Template>
         </RadzenDataList>
