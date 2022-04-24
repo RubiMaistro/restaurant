@@ -16,12 +16,25 @@
     {
         @foreach(var order in OrderModelList)
         {
-            <RadzenCard>
-                <h1>@order.Order.Id - @order.Order.Price - @order.Order.Status</h1>
-                @foreach(var food in order.Foods)
-                {
-                    <h1>@food.Name - @food.Price</h1>
-                }
+            <RadzenCard class="d-flex flex-row p-4" style="font-size:x-large;">
+                <div class="flex-column">
+                    <div>@order.Order.Id</div>
+                    <div>@order.Order.CreatedDate</div>
+                    <div>@order.Order.Price</div>
+                    <select class="form-control" @bind="@order.Order.Status" style="width: fit-content">
+                        @foreach (var orderStatus in OrderStatusList)
+                        {
+                            <option value="@orderStatus">@orderStatus</option>
+                        }
+                    </select>
+                </div>
+
+                <RadzenCard>
+                    @foreach(var food in order.Foods)
+                    {
+                        <h4>@food.Name - @food.Price Ft</h4>
+                    }
+                </RadzenCard>
             </RadzenCard>
         }
     }
@@ -30,11 +43,15 @@
 
 @code {
 
+    public IList<Order> SelectedOrders { get; set; }
+
     public List<Order> Orders { get; set; }
     public List<ShoppingCartModel> OrderModelList { get; set; } = new List<ShoppingCartModel>();
+    public List<OrderStatus> OrderStatusList = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList();
 
     protected override async Task OnInitializedAsync()
     {
+
         Orders = await HttpClient.GetFromJsonAsync<List<Order>>("order");
 
         foreach(var order in Orders)
