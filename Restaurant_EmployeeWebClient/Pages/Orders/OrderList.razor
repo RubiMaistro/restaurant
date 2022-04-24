@@ -3,8 +3,9 @@
 @using Radzen
 
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
-<RadzenCard>
+<RadzenCard class="d-flex flex-column" Style="column-count:2">
     <h1>Rendelések lista</h1>
     @if(OrderModelList == null)
     {
@@ -16,25 +17,30 @@
     {
         @foreach(var order in OrderModelList)
         {
-            <RadzenCard class="d-flex flex-row p-4" style="font-size:x-large;">
-                <div class="flex-column">
-                    <div>@order.Order.Id</div>
-                    <div>@order.Order.CreatedDate</div>
-                    <div>@order.Order.Price</div>
-                    <select class="form-control" @bind="@order.Order.Status" style="width: fit-content">
-                        @foreach (var orderStatus in OrderStatusList)
-                        {
-                            <option value="@orderStatus">@orderStatus</option>
-                        }
-                    </select>
+            <RadzenCard class="d-flex flex-column p-4 m-2" style="background-color:lightgrey; font-size:x-large; border-radius: 40px; width:fit-content; height:fit-content">
+                <div class="d-flex flex-row" style="gap: .8rem">
+                    <RadzenBadge Style="background-color:white; color:black; border-radius: 50%; width:fit-content; height:fit-content; font-size:xx-large">@order.Order.Id</RadzenBadge>
+                    <div class="mt-2" style="width:fit-content; height:fit-content;">@order.Order.CreatedDate.ToShortTimeString() (@order.Order.CreatedDate.ToShortDateString())</div>
+                    
+                    <EditForm Model="@order.Order" OnValidSubmit="@(() => SaveChangedStatus(order.Order))" class="mt-2 d-flex flex-row" style="gap: 0.8rem">
+                        <InputSelect class="form-control" @bind-Value="@order.Order.Status" style="width: fit-content; height: fit-content">
+                            @foreach (var orderStatus in OrderStatusList)
+                            {
+                                <option value="@orderStatus">@orderStatus</option>
+                            }
+                        </InputSelect>
+                        <button type="submit" class="btn btn-primary" style="width:fit-content; height:fit-content">Mentés</button>
+                    </EditForm>
                 </div>
 
-                <RadzenCard>
+                <RadzenCard class="m-2 mx-auto" Style="width:fit-content; border-radius:30px; color:black;">
                     @foreach(var food in order.Foods)
                     {
-                        <h4>@food.Name - @food.Price Ft</h4>
+                        <div style="font-size:x-large">@food.Name (@food.Price Ft)</div>
                     }
                 </RadzenCard>
+                <RadzenCard class="mx-auto p-0 px-4" style="font-size:xx-large; border-radius: 30px; height:fit-content; width:fit-content">Összesen: @order.Order.Price Ft</RadzenCard>
+
             </RadzenCard>
         }
     }
@@ -42,8 +48,6 @@
 
 
 @code {
-
-    public IList<Order> SelectedOrders { get; set; }
 
     public List<Order> Orders { get; set; }
     public List<ShoppingCartModel> OrderModelList { get; set; } = new List<ShoppingCartModel>();
@@ -71,5 +75,11 @@
 
             OrderModelList.Add(orderModel);
         }
+    }
+
+    private async void SaveChangedStatus(Order order)
+    {
+        await HttpClient.PutAsJsonAsync($"order/{order.Id}", order);
+        NavigationManager.NavigateTo("/order/list");
     }
 }

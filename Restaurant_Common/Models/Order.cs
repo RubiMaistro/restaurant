@@ -5,7 +5,6 @@ namespace Restaurant_Common.Models
 {
     public class Order
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
         [Required]
@@ -21,6 +20,8 @@ namespace Restaurant_Common.Models
             CreatedDate = DateTime.Now;
             Status = OrderStatus.Recorded;
         }
+
+
 
     }
 }

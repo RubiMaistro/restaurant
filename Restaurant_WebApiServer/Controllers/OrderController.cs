@@ -39,9 +39,40 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPost]
         public ActionResult Post(Order order)
         {
+            var orders = OrderRepository.GetOrders();
+
+            order.Id = GetNewId(orders);
             OrderRepository.AddOrder(order);
 
             return Ok($"The '{order.Id}' id of food adding successful!");
+        }
+
+        private int GetNewId(IList<Order> orders)
+        {
+            int newId = 0;
+            foreach(var order in orders)
+            {
+                if(newId <= order.Id)
+                {
+                    newId = order.Id;
+                }
+            }
+            return newId + 1;
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult Put(Order order, long id)
+        {
+            var OrderFromDb = OrderRepository.GetOrderById(id);
+
+            if (OrderFromDb != null)
+            {
+                OrderRepository.UpdateOrder(order);
+
+                return Ok($"{order.Id} order updating successful!");
+            }
+
+            return NotFound("Order not found!");
         }
 
         [HttpDelete("{id}")]

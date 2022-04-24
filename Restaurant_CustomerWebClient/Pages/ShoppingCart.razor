@@ -45,7 +45,7 @@
 @code {
 
     public double PriceSummary { get; set; }
-    public ShoppingCartModel Cart { get; set; }
+    public ShoppingCartModel Cart { get; set; } 
     public int OrderNumber { get; set; }
 
     protected override Task OnParametersSetAsync()
@@ -87,15 +87,7 @@
         // add ordered foods
         foreach(var food in Cart.Foods)
         {
-            var orders = await HttpClient.GetFromJsonAsync<List<Order>>("order");
-            foreach(var order in orders)
-            {
-                if (order.Equals(Cart.Order))
-                {
-                    await HttpClient.PostAsJsonAsync("food/ordered", new OrderedFood(food.Id, order.Id));
-                }
-            }
-            
+            await HttpClient.PostAsJsonAsync("food/ordered", new OrderedFood(food.Id, Cart.Order.Id));
             NavigationManager.NavigateTo("/");
         }
 

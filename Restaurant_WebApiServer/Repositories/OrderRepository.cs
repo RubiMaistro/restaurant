@@ -34,6 +34,16 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
+        public static void UpdateOrder(Order order)
+        {
+            using (var database = new RestaurantDbContext())
+            {
+                database.Orders.Update(order);
+
+                database.SaveChanges();
+            }
+        }
+
         public static void DeleteOrder(Order order)
         {
             using (var database = new RestaurantDbContext())
