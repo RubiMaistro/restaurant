@@ -13,7 +13,7 @@ namespace Restaurant_WebApiServer.Repositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source=(localdb)\\ProjectModels;Database=RestaurantDb;Integrated Security=True;");
+                "Server=(localdb)\\mssqllocaldb;Database=RestaurantDb;Integrated Security=True;");
         }
     }
 }

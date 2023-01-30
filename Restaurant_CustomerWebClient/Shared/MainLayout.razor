@@ -2,20 +2,14 @@
 
 <PageTitle>Restaurant_CustomerWebClient</PageTitle>
 
-<div class="page" style="background-image: url('https://localhost:7107/background.jpeg'); background-repeat: no-repeat; background-size:cover">
-    <div class="sidebar mx-4" style="border-radius: 50px; height: auto; position: relative; margin-top: 100px; margin-bottom: 100px">
+<main>
+    <header>
         <NavMenu />
+    </header>
+    <div class="main-content">
+        @Body
     </div>
-
-    <main>
-        <article class="content mx-auto mt-3" style="width: 100%; z-index: 1; position: relative; margin-right: 20px">
-            @Body
-        </article>
-    </main>
-
-    <div style="height: fit-content; position: relative; margin: 4rem 2rem 0 0">
-        <a href="/shoppingcart" class="btn btn-lg" style="color: white; background-color: rebeccapurple; border: none; border-radius: 20px; font-size:xx-large; font-weight:600;">
-          <span class="fa fa-shopping-cart" ></span> Bevásárlókosár
-        </a>
-    </div>
-</div>
+    <footer>
+        <h3>Footer Component</h3>
+    </footer>
+</main>

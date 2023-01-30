@@ -3,86 +3,35 @@
 
 <PageTitle>Menü</PageTitle>
 
-<RadzenCard class="d-flex flex-column align-items-start mb-4" Style="color: black; background-color: rebeccapurple; border: none; border-radius: 50px;">
-    <RadzenCard class="position-fixed px-4" 
-        Style="width: fit-content; z-index: 1; border: none; border-radius: 50px 50px 50px 0; color: white; background-color:rebeccapurple">
-        <h1 class="mt-2" style="font-weight: 600">@FoodType.Name</h1>
-    </RadzenCard>
-
-@if(Foods == null)
-{
-    <RadzenCard>
-        <h4 class="mb-4">Loading...</h4>
-        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
-    </RadzenCard>
-}
-else 
-{
-    <div class="container" >
-        <div class="row py-5 mt-5">
-            <div class="col">
-                @if(Foods.Count == 0)
+<div class="menu-container">
+    <div class="menu-type">
+        <h1>@FoodType?.Name</h1>
+    </div>
+    @if (Foods == null)
+    {
+        <h2>Betöltés</h2>
+    }
+    else
+    {
+        @if (Foods.Count() == 0)
+        {
+            <h2>Nincsenek ételek</h2>
+        }
+        else
+        {
+            <div class="menu-content basic-card column">
+                @foreach (var food in Foods)
                 {
-                   <RadzenLabel class="m-4 p-4" Style="width: fit-content; font-size: xx-large; background-color: white; border-radius: 10px" Text="Nincs megjeleníthető adat..."></RadzenLabel>
-                }
-                else
-                {
-                    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Foods" TItem="Food" PageSize="10" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
-                        <Template Context="food">
-                            <RadzenCard Style="width: fit-content; border: none; margin: 1.5rem; overflow: hidden; border-radius: 10px">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="column d-flex justify-content-between align-content-center">
-                                            <div class="m-4">
-            
-                                                <RadzenImage Path="@($"{ImageServervicePath}/{food.ImageUrl}")" Class="float-left" 
-                                                    Style="width: 200px; height: 150px" />
-                                            </div>
-                                            <div class="row">
-                                                <div style="font-size: xx-large">
-                                                
-                                                    @(food.Name)
-                                                </div>
-                                                <div style="font-size: large">
-                                                    @(food.Description)
-                                                </div>
-                                            </div>
-                                            <div class="column">
-                                                <div class="m-4 col-md-6 order-first order-lg-last col-lg-3 text-sm-right text-lg-center mb-3 mb-lg-0" style="width: fit-content">
-                                                    <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Style="font-size: x-large" Class="price-badge" Text=@($"{String.Format(new System.Globalization.CultureInfo("hu-HU"), "{0:C}", food.Price)}") />
-                                                </div>
-                                                <div>
-                                                    <RadzenButton Text="Megrendelés" Click="@(args => AddToCartAsync(food))" class="m-4 p-2" Style="font-size: x-large; width: fit-content; border-radius: 20px" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </RadzenCard>
-                        </Template>
-                    </RadzenDataList>
+                    <div class="menu-content-item basic-card">
+                        <img class="menu-content-item-image" src="images/food.png" >
+                        <div class="menu-content-item-container basic-card column">
+                            <div class="name">@food.Name</div>
+                            <div class="description">@food.Description</div>
+                            <div class="price">@food.Price Ft</div>
+                        </div>
+                    </div>
                 }
             </div>
-        </div>
-    </div>
-}
-
-</RadzenCard>
-
-
-<style>
-.product-title {
-    min-height: 72px;
-    color: #da0074;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 20px;
-    letter-spacing: -0.02em;
-}
-.price-badge {
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 20px;
-    padding: 8px;
-}
-</style>
+        }
+    }
+</div>

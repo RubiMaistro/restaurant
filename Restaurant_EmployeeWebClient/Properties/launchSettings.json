@@ -11,8 +11,8 @@
     "Restaurant_EmployeeWebClient": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7258;http://localhost:5258",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,62 +1,54 @@
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+.navmenu-container {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: fit-content;
+    padding: 1em 5em;
+    color: #7aa157;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: var(--nav-orange);
 }
 
-.top-row {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.navbar-brand {
-    font-size: 1.1rem;
-}
-
-.oi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
-}
-
-.nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
-
-    .nav-item:first-of-type {
-        padding-top: 1rem;
-    }
-
-    .nav-item:last-of-type {
-        padding-bottom: 1rem;
-    }
-
-    .nav-item ::deep a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
+    .navmenu-container .navmenu-menu {
         display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
         align-items: center;
-        line-height: 3rem;
+        width: 100%;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
+.menu-item-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 .5em;
+    padding: .2em;
+    border: none;
+    border-radius: 16px;
+    color: var(--nav-orange);
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 400ms ease-in;
 }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    .menu-item-container:hover {
+        color: #fff;
+        background-color: #ffbb83;
+        transition: all 300ms ease-out;
+    }
+
+.menu-item-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: .2em .5em;
+    border: 2px solid var(--nav-orange);
+    border-radius: 12px;
+    color: var(--nav-font-orange);
+    background-color: #fff;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
+.menu-item-container:hover .menu-item-content {
+    color: var(--nav-font-orange-hover);
 }
