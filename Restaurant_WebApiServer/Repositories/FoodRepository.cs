@@ -2,9 +2,22 @@
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public class FoodRepository
+    public interface IFoodRepository
     {
-        public static IList<Food> GetFoods()
+        public IList<Food> GetFoods();
+        public Food GetFoodById(long id);
+        public void AddFood(Food food);
+        public void UpdateFood(Food food);
+        public void DeleteFood(Food food);
+    }
+
+    public class FoodRepository : IFoodRepository
+    {
+        public FoodRepository()
+        {
+        }
+
+        public IList<Food> GetFoods()
         {
             using (var database = new RestaurantContext())
             {
@@ -14,7 +27,7 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public static Food GetFoodById(long id)
+        public Food GetFoodById(long id)
         {
             using (var database = new RestaurantContext())
             {
@@ -24,7 +37,7 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public static void AddFood(Food food)
+        public void AddFood(Food food)
         {
             using (var database = new RestaurantContext())
             {
@@ -34,7 +47,7 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public static void UpdateFood(Food food)
+        public void UpdateFood(Food food)
         {
             using (var database = new RestaurantContext())
             {
@@ -44,7 +57,7 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public static void DeleteFood(Food food)
+        public void DeleteFood(Food food)
         {
             using (var database = new RestaurantContext())
             {

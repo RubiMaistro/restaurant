@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Restaurant_Common.Models;
 using Restaurant_WebApiServer.Repositories;
 
@@ -8,10 +9,19 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food")]
     public class FoodController : Controller
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<Food>> Get()
+        private readonly IFoodRepository _foodRepository;
+        private readonly IMapper _mapper;
+        public FoodController(IFoodRepository foodRepository, IMapper mapper)
         {
-            var foods = FoodRepository.GetFoods();
+            _foodRepository = foodRepository;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Food>))]
+        public IActionResult Get()
+        {
+            var foods = _mapper.Map<List<Food>>(_foodRepository.GetFoods());
 
             if (foods != null)
             {
@@ -22,9 +32,10 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Food> Get(long id)
+        [ProducesResponseType(200, Type = typeof(Food))]
+        public IActionResult Get(long id)
         {
-            var food = FoodRepository.GetFoodById(id);
+            var food = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
 
             if (food != null)
             {
@@ -37,21 +48,37 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(Food food)
+        [ProducesResponseType(200)]
+        public IActionResult Post(Food foodCreate)
         {
-            FoodRepository.AddFood(food);
+            if (foodCreate == null)
+                return BadRequest(foodCreate);
 
-            return Ok($"{food.Name} food adding successful!");
+            var foods = _foodRepository.GetFoods()
+                .Where(c => c.Name.Trim().ToUpper() == foodCreate.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (foods != null)
+            {
+                return StatusCode(422, foodCreate); // Food is already exist
+            }
+
+            var foodMap = _mapper.Map<Food>(foodCreate);
+
+            _foodRepository.AddFood(foodMap);
+
+            return Ok($"{foodMap.Name} food adding successful!");
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(Food food, long id)
+        [ProducesResponseType(200)]
+        public IActionResult Put(Food food, long id)
         {
-            var FoodFromDb = FoodRepository.GetFoodById(id);
+            var FoodFromDb = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
 
             if (FoodFromDb != null)
             {
-                FoodRepository.UpdateFood(food);
+                _foodRepository.UpdateFood(food);
 
                 return Ok($"{food.Name} food updating successful!");
             }
@@ -60,13 +87,14 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(long id)
+        [ProducesResponseType(200)]
+        public IActionResult Delete(long id)
         {
-            var food = FoodRepository.GetFoodById(id);
+            var food = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
 
             if (food != null)
             {
-                FoodRepository.DeleteFood(food);
+                _foodRepository.DeleteFood(food);
 
                 return Ok($"{food.Name} food deleting successful!");
             }
