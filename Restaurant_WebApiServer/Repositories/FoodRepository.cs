@@ -1,4 +1,4 @@
-﻿using Restaurant_Common.Models;
+﻿using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
 {
@@ -6,7 +6,7 @@ namespace Restaurant_WebApiServer.Repositories
     {
         public static IList<Food> GetFoods()
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 var foods = database.Foods.ToList();
 
@@ -16,7 +16,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static Food GetFoodById(long id)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 var food = database.Foods.Where(food => food.Id == id).FirstOrDefault();
 
@@ -26,7 +26,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void AddFood(Food food)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.Foods.Add(food);
 
@@ -36,7 +36,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void UpdateFood(Food food)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.Foods.Update(food);
 
@@ -46,7 +46,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void DeleteFood(Food food)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.Foods.Remove(food);
 

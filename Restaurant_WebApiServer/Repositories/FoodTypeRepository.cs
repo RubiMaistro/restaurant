@@ -1,4 +1,4 @@
-﻿using Restaurant_Common.Models;
+﻿using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
 {
@@ -6,7 +6,7 @@ namespace Restaurant_WebApiServer.Repositories
     {
         public static IList<FoodType> GetFoodTypes()
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 var types = database.FoodTypes.ToList();
 
@@ -16,7 +16,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static FoodType GetFoodTypeById(long id)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 var type = database.FoodTypes.Where(type => type.Id == id).FirstOrDefault();
 
@@ -26,7 +26,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void AddFoodType(FoodType type)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.FoodTypes.Add(type);
 
@@ -36,7 +36,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void UpdateFoodType(FoodType type)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.FoodTypes.Update(type);
 
@@ -46,7 +46,7 @@ namespace Restaurant_WebApiServer.Repositories
 
         public static void DeleteFoodType(FoodType type)
         {
-            using (var database = new RestaurantDbContext())
+            using (var database = new RestaurantContext())
             {
                 database.FoodTypes.Remove(type);
 

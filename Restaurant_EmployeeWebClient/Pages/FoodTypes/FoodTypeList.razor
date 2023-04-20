@@ -17,7 +17,7 @@
     {
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@FoodTypes" PageSize="10" >
             <Template Context="FoodType">
-                <RadzenCard Style="width: fit-content; max-width:20%; background-color:lightgrey; font-weight:400; border-radius:30px">
+                <RadzenCard Style="width:25%; max-width:20%; background-color:lightgrey; font-weight:400; border-radius:30px">
                     <h2 class="mx-auto">@(FoodType.Name)</h2>
                     <RadzenButton Click="@(args => NavigationManager.NavigateTo($"food/type/{FoodType.Id}/edit"))" class="p-2 mx-auto" style="background-color:deepskyblue; border-radius:30px; width:fit-content">Szerkeszt</RadzenButton>
                 </RadzenCard>

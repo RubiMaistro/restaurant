@@ -1,15 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using Restaurant_WebApiServer.DataObjects;
+using Restaurant_WebApiServer.Repositories;
+
 namespace Restaurant_WebApiServer
 {
     public class Program
     {
+        private static WebApplicationBuilder? _builder { get; set; }
+        private static ConfigurationManager? _config => _builder?.Configuration;
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            _builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            AddServices(builder.Services);
+            AddServices(_builder.Services);
 
-            var app = builder.Build();
+            var app = _builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -37,8 +43,21 @@ namespace Restaurant_WebApiServer
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            //services.AddDbContext<RestaurantContext>(options =>
+            //{
+            //    options.UseSqlServer(_config.GetConnectionString("RestaurantDb"),
+            //        sqlServerOptionsAction: sqlOptions =>
+            //        {
+            //            sqlOptions.EnableRetryOnFailure(
+            //                maxRetryCount: 10,
+            //                maxRetryDelay: TimeSpan.FromSeconds(5),
+            //                errorNumbersToAdd: null);
+            //        });
+            //});
+
             // CORS enabled
             services.AddCors();
+
         }
         
     }

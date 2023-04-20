@@ -2,25 +2,25 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Restaurant_WebApiServer.Repositories;
+using Restaurant_WebApiServer.DataObjects;
 
 #nullable disable
 
 namespace Restaurant_WebApiServer.Migrations
 {
-    [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RestaurantContext))]
+    [Migration("20230420153212_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Restaurant_Common.Models.Food", b =>
                 {
@@ -28,32 +28,25 @@ namespace Restaurant_WebApiServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("FoodTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Foods");
                 });
@@ -64,11 +57,9 @@ namespace Restaurant_WebApiServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -81,13 +72,11 @@ namespace Restaurant_WebApiServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double>("Price")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -103,13 +92,11 @@ namespace Restaurant_WebApiServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<int>("FoodId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -117,18 +104,6 @@ namespace Restaurant_WebApiServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderedFoods");
-                });
-
-            modelBuilder.Entity("Restaurant_Common.Models.Food", b =>
-                {
-                    b.HasOne("Restaurant_Common.Models.Order", null)
-                        .WithMany("Foods")
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("Restaurant_Common.Models.Order", b =>
-                {
-                    b.Navigation("Foods");
                 });
 #pragma warning restore 612, 618
         }
