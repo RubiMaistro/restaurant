@@ -10,18 +10,16 @@ namespace Restaurant_WebApiServer.Controllers
     public class FoodController : Controller
     {
         private readonly IFoodRepository _foodRepository;
-        private readonly IMapper _mapper;
-        public FoodController(IFoodRepository foodRepository, IMapper mapper)
+        public FoodController(IFoodRepository foodRepository)
         {
             _foodRepository = foodRepository;
-            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Food>))]
         public IActionResult Get()
         {
-            var foods = _mapper.Map<List<Food>>(_foodRepository.GetFoods());
+            var foods = _foodRepository.GetFoods();
 
             if (foods != null)
             {
@@ -35,7 +33,7 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200, Type = typeof(Food))]
         public IActionResult Get(long id)
         {
-            var food = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
+            var food = _foodRepository.GetFoodById(id);
 
             if (food != null)
             {
@@ -63,18 +61,16 @@ namespace Restaurant_WebApiServer.Controllers
                 return StatusCode(422, foodCreate); // Food is already exist
             }
 
-            var foodMap = _mapper.Map<Food>(foodCreate);
+            _foodRepository.AddFood(foodCreate);
 
-            _foodRepository.AddFood(foodMap);
-
-            return Ok($"{foodMap.Name} food adding successful!");
+            return Ok($"{foodCreate.Name} food adding successful!");
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
         public IActionResult Put(Food food, long id)
         {
-            var FoodFromDb = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
+            var FoodFromDb = _foodRepository.GetFoodById(id);
 
             if (FoodFromDb != null)
             {
@@ -90,7 +86,7 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200)]
         public IActionResult Delete(long id)
         {
-            var food = _mapper.Map<Food>(_foodRepository.GetFoodById(id));
+            var food = _foodRepository.GetFoodById(id);
 
             if (food != null)
             {

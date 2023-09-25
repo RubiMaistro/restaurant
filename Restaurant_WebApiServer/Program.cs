@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_WebApiServer.DataObjects;
 using Restaurant_WebApiServer.Repositories;
@@ -57,7 +58,7 @@ namespace Restaurant_WebApiServer
 
             // CORS enabled
             services.AddCors();
-
+            services.AddScoped<IFoodRepository, FoodRepository>();
         }
         
     }
