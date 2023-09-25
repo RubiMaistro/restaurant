@@ -8,7 +8,7 @@ namespace Restaurant_CustomerWebClient.Pages
     public partial class FoodMenu
     {
         [Parameter]
-        public string TypeId { get; set; }
+        public int TypeId { get; set; }
         [Inject]
         HttpClient HttpClient { get; set; }
         [Inject]
@@ -29,7 +29,7 @@ namespace Restaurant_CustomerWebClient.Pages
         {
             ImageServervicePath = "https://localhost:7000/api/file";
 
-            FoodType = await HttpClient.GetFromJsonAsync<FoodType>($"food/type/{int.Parse(TypeId)}");
+            FoodType = await HttpClient.GetFromJsonAsync<FoodType>($"food/type/{TypeId}");
 
             var allFoodsFromDb = await HttpClient.GetFromJsonAsync<List<Food>>("food");
 
