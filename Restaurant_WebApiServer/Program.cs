@@ -8,11 +8,11 @@ namespace Restaurant_WebApiServer
     public class Program
     {
         private static WebApplicationBuilder? _builder { get; set; }
-        private static ConfigurationManager? _config => _builder?.Configuration;
+        private static ConfigurationManager? _config { get; set; }
         public static void Main(string[] args)
         {
             _builder = WebApplication.CreateBuilder(args);
-
+            _config = _builder.Configuration;
             // Add services to the container.
             AddServices(_builder.Services);
 
@@ -59,6 +59,8 @@ namespace Restaurant_WebApiServer
             // CORS enabled
             services.AddCors();
             services.AddScoped<IFoodRepository, FoodRepository>();
+            services.AddDbContext<RestaurantContext>(options =>
+                options.UseMySQL(_config?.GetConnectionString("RestaurantDb")));
         }
         
     }

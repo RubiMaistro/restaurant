@@ -2,68 +2,56 @@
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public interface IFoodRepository
-    {
-        public IList<Food> GetFoods();
-        public Food GetFoodById(long id);
-        public void AddFood(Food food);
-        public void UpdateFood(Food food);
-        public void DeleteFood(Food food);
-    }
-
     public class FoodRepository : IFoodRepository
     {
-        public FoodRepository()
+        private readonly RestaurantContext _context;
+        public FoodRepository(RestaurantContext context)
         {
+            _context = context;
         }
 
         public IList<Food> GetFoods()
         {
-            using (var database = new RestaurantContext())
-            {
-                var foods = database.Foods.ToList();
-
-                return foods;
-            }
+            if (_context.Foods != null)
+                return _context.Foods.ToList();
+            return new List<Food>();
         }
 
         public Food GetFoodById(long id)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Foods != null)
             {
-                var food = database.Foods.Where(food => food.Id == id).FirstOrDefault();
-
-                return food;
+                var foods = _context.Foods.Where(food => food.Id == id);
+                if (foods.Any())
+                    return foods.First();
             }
+            return new Food();
         }
 
         public void AddFood(Food food)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Foods != null)
             {
-                database.Foods.Add(food);
-
-                database.SaveChanges();
+                _context.Foods.Add(food);
+                _context.SaveChanges();
             }
         }
 
         public void UpdateFood(Food food)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Foods != null)
             {
-                database.Foods.Update(food);
-
-                database.SaveChanges();
+                _context.Foods.Update(food);
+                _context.SaveChanges();
             }
         }
 
         public void DeleteFood(Food food)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Foods != null)
             {
-                database.Foods.Remove(food);
-
-                database.SaveChanges();
+                _context.Foods.Remove(food);
+                _context.SaveChanges();
             }
         }
     }

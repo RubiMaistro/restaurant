@@ -30,7 +30,7 @@ namespace Restaurant.Tests.Controller
             var foods = A.Fake<ICollection<Food>>();
             var foodList = A.Fake<List<Food>>();
             A.CallTo(() => _mapper.Map<List<Food>>(foods)).Returns(foodList);
-            var controller = new FoodController(_foodRepository, _mapper);
+            var controller = new FoodController(_foodRepository);
 
             //Act
             var result = controller.Get();
@@ -55,7 +55,7 @@ namespace Restaurant.Tests.Controller
             A.CallTo(() => _mapper.Map<Food>(foodCreate)).Returns(food);
             A.CallTo(() => _foodRepository.AddFood(foodMap));
 
-            var controller = new FoodController(_foodRepository, _mapper);
+            var controller = new FoodController(_foodRepository);
 
             //Act
             var result = controller.Post(foodCreate);
