@@ -59,6 +59,9 @@ namespace Restaurant_WebApiServer
             // CORS enabled
             services.AddCors();
             services.AddScoped<IFoodRepository, FoodRepository>();
+            services.AddScoped<IFoodTypeRepository, FoodTypeRepository>();
+            services.AddScoped<IOrderedFoodRepository, OrderedFoodRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddDbContext<RestaurantContext>(options =>
                 options.UseMySQL(_config?.GetConnectionString("RestaurantDb")));
         }

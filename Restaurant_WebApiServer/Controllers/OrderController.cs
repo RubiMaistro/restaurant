@@ -8,10 +8,15 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/order")]
     public class OrderController : Controller
     {
+        private readonly IOrderRepository _orderRepository;
+        public OrderController(IOrderRepository orderRepository)
+        {
+            _orderRepository = orderRepository;
+        }
         [HttpGet]
         public ActionResult<IEnumerable<Order>> Get()
         {
-            var orders = OrderRepository.GetOrders();
+            var orders = _orderRepository.GetOrders();
 
             if (orders != null)
             {
@@ -24,7 +29,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpGet("{id}")]
         public ActionResult<Order> Get(long id)
         {
-            var order = OrderRepository.GetOrderById(id);
+            var order = _orderRepository.GetOrderById(id);
 
             if (order != null)
             {
@@ -39,10 +44,10 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPost]
         public ActionResult Post(Order order)
         {
-            var orders = OrderRepository.GetOrders();
+            var orders = _orderRepository.GetOrders();
 
             order.Id = GetNewId(orders);
-            OrderRepository.AddOrder(order);
+            _orderRepository.AddOrder(order);
 
             return Ok($"The '{order.Id}' id of food adding successful!");
         }
@@ -63,11 +68,11 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(Order order, long id)
         {
-            var OrderFromDb = OrderRepository.GetOrderById(id);
+            var OrderFromDb = _orderRepository.GetOrderById(id);
 
             if (OrderFromDb != null)
             {
-                OrderRepository.UpdateOrder(order);
+                _orderRepository.UpdateOrder(order);
 
                 return Ok($"{order.Id} order updating successful!");
             }
@@ -78,11 +83,11 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(long id)
         {
-            var order = OrderRepository.GetOrderById(id);
+            var order = _orderRepository.GetOrderById(id);
 
             if (order != null)
             {
-                OrderRepository.DeleteOrder(order);
+                _orderRepository.DeleteOrder(order);
 
                 return Ok($"{order.Id} food deleting successful!");
             }

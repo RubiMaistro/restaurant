@@ -8,10 +8,15 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food/ordered")]
     public class OrderedFoodController : Controller
     {
+        private readonly IOrderedFoodRepository _orderedFoodRepository;
+        public OrderedFoodController(IOrderedFoodRepository orderedFoodRepository)
+        {
+            _orderedFoodRepository = orderedFoodRepository;
+        }
         [HttpGet]
         public ActionResult<IEnumerable<OrderedFood>> Get()
         {
-            var foods = OrderedFoodRepository.GetOrders();
+            var foods = _orderedFoodRepository.GetOrders();
 
             if (foods != null)
             {
@@ -24,7 +29,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpGet("{id}")]
         public ActionResult<OrderedFood> Get(long id)
         {
-            var food = OrderedFoodRepository.GetOrderById(id);
+            var food = _orderedFoodRepository.GetOrderById(id);
 
             if (food != null)
             {
@@ -39,7 +44,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPost]
         public ActionResult Post(OrderedFood food)
         {
-            OrderedFoodRepository.AddOrder(food);
+            _orderedFoodRepository.AddOrder(food);
 
             return Ok($"The {food.FoodId} id of food adding successful!");
         }
@@ -47,11 +52,11 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(long id)
         {
-            var food = OrderedFoodRepository.GetOrderById(id);
+            var food = _orderedFoodRepository.GetOrderById(id);
 
             if (food != null)
             {
-                OrderedFoodRepository.DeleteOrder(food);
+                _orderedFoodRepository.DeleteOrder(food);
 
                 return Ok($"The {food.Id} id of food deleting successful!");
             }

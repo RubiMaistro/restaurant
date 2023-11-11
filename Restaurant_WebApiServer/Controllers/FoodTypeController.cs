@@ -8,10 +8,16 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food/type")]
     public class FoodTypeController : Controller
     {
+        private readonly IFoodTypeRepository _foodTypeRepository;
+
+        public FoodTypeController(IFoodTypeRepository foodTypeRepository)
+        {
+            _foodTypeRepository = foodTypeRepository;
+        }
         [HttpGet]
         public ActionResult<IEnumerable<FoodType>> Get()
         {
-            var types = FoodTypeRepository.GetFoodTypes();
+            var types = _foodTypeRepository.GetFoodTypes();
 
             if (types != null)
             {
@@ -24,7 +30,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpGet("{id}")]
         public ActionResult<FoodType> Get(long id)
         {
-            var type = FoodTypeRepository.GetFoodTypeById(id);
+            var type = _foodTypeRepository.GetFoodTypeById(id);
 
             if (type != null)
             {
@@ -39,7 +45,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPost]
         public ActionResult Post(FoodType type)
         {
-            FoodTypeRepository.AddFoodType(type);
+            _foodTypeRepository.AddFoodType(type);
 
             return Ok($"{type.Name} food type adding successful!");
         }
@@ -47,11 +53,11 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(FoodType type, long id)
         {
-            var FoodTypeFromDb = FoodTypeRepository.GetFoodTypeById(id);
+            var FoodTypeFromDb = _foodTypeRepository.GetFoodTypeById(id);
 
             if (FoodTypeFromDb != null)
             {
-                FoodTypeRepository.UpdateFoodType(type);
+                _foodTypeRepository.UpdateFoodType(type);
 
                 return Ok($"{type.Name} food type updating successful!");
             }
@@ -64,11 +70,11 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(long id)
         {
-            var type = FoodTypeRepository.GetFoodTypeById(id);
+            var type = _foodTypeRepository.GetFoodTypeById(id);
 
             if (type != null)
             {
-                FoodTypeRepository.DeleteFoodType(type);
+                _foodTypeRepository.DeleteFoodType(type);
 
                 return Ok($"{type.Name} food type deleting successful!");
             }
