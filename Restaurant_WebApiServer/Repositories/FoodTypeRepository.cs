@@ -2,55 +2,55 @@
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public class FoodTypeRepository
+    public class FoodTypeRepository : IFoodTypeRepository
     {
-        public static IList<FoodType> GetFoodTypes()
+        private readonly RestaurantContext _context;
+        public FoodTypeRepository(RestaurantContext context)
         {
-            using (var database = new RestaurantContext())
-            {
-                var types = database.FoodTypes.ToList();
+            _context = context;
+        }
+        public IList<FoodType> GetFoodTypes()
+        {
+            if (_context.FoodTypes != null)
+                return _context.FoodTypes.ToList();
+            return new List<FoodType>();
+        }
 
-                return types;
+        public FoodType GetFoodTypeById(long id)
+        {
+            if (_context.FoodTypes != null)
+            {
+                var types = _context.FoodTypes.Where(type => type.Id == id);
+                if (types.Any())
+                    return types.First();
+            }
+            return new FoodType();
+        }
+
+        public void AddFoodType(FoodType type)
+        {
+            if (_context.FoodTypes != null)
+            {
+                _context.FoodTypes.Add(type);
+                _context.SaveChanges();
             }
         }
 
-        public static FoodType GetFoodTypeById(long id)
+        public void UpdateFoodType(FoodType type)
         {
-            using (var database = new RestaurantContext())
+            if (_context.FoodTypes != null)
             {
-                var type = database.FoodTypes.Where(type => type.Id == id).FirstOrDefault();
-
-                return type;
+                _context.FoodTypes.Update(type);
+                _context.SaveChanges();
             }
         }
 
-        public static void AddFoodType(FoodType type)
+        public void DeleteFoodType(FoodType type)
         {
-            using (var database = new RestaurantContext())
+            if (_context.FoodTypes != null)
             {
-                database.FoodTypes.Add(type);
-
-                database.SaveChanges();
-            }
-        }
-
-        public static void UpdateFoodType(FoodType type)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.FoodTypes.Update(type);
-
-                database.SaveChanges();
-            }
-        }
-
-        public static void DeleteFoodType(FoodType type)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.FoodTypes.Remove(type);
-
-                database.SaveChanges();
+                _context.FoodTypes.Remove(type);
+                _context.SaveChanges();
             }
         }
     }

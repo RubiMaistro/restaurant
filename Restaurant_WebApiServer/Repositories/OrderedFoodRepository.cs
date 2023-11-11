@@ -1,46 +1,48 @@
-﻿using Restaurant_WebApiServer.DataObjects;
+﻿using Restaurant_Common.Models;
+using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public class OrderedFoodRepository
+    public class OrderedFoodRepository : IOrderedFoodRepository
     {
-        public static IList<OrderedFood> GetOrders()
+        private readonly RestaurantContext _context;
+        public OrderedFoodRepository(RestaurantContext context)
         {
-            using (var database = new RestaurantContext())
-            {
-                var orders = database.OrderedFoods.ToList();
+            _context = context;
+        }
+        public IList<OrderedFood> GetOrders()
+        {
+            if (_context.OrderedFoods != null)
+                return _context.OrderedFoods.ToList();
+            return new List<OrderedFood>();
+        }
 
-                return orders;
+        public OrderedFood GetOrderById(long id)
+        {
+            if (_context.OrderedFoods != null)
+            {
+                var orderedFood = _context.OrderedFoods.Where(order => order.Id == id);
+                if (orderedFood.Any())
+                    return orderedFood.First();
+            }
+            return new OrderedFood();
+        }
+
+        public void AddOrder(OrderedFood order)
+        {
+            if (_context.OrderedFoods != null)
+            {
+                _context.OrderedFoods.Add(order);
+                _context.SaveChanges();
             }
         }
 
-        public static OrderedFood GetOrderById(long id)
+        public void DeleteOrder(OrderedFood order)
         {
-            using (var database = new RestaurantContext())
+            if (_context.OrderedFoods != null)
             {
-                var order = database.OrderedFoods.Where(order => order.Id == id).FirstOrDefault();
-
-                return order;
-            }
-        }
-
-        public static void AddOrder(OrderedFood order)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.OrderedFoods.Add(order);
-
-                database.SaveChanges();
-            }
-        }
-
-        public static void DeleteOrder(OrderedFood order)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.OrderedFoods.Remove(order);
-
-                database.SaveChanges();
+                _context.OrderedFoods.Remove(order);
+                _context.SaveChanges();
             }
         }
     }

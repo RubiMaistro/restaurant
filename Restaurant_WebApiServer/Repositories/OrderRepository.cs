@@ -2,55 +2,55 @@
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
-        public static IList<Order> GetOrders()
+        private readonly RestaurantContext _context;
+        public OrderRepository(RestaurantContext context)
         {
-            using (var database = new RestaurantContext())
-            {
-                var orders = database.Orders.ToList();
+            _context = context;
+        }
+        public IList<Order> GetOrders()
+        {
+            if (_context.Orders != null)
+                return _context.Orders.ToList();
+            return new List<Order>();
+        }
 
-                return orders;
+        public Order GetOrderById(long id)
+        {
+            if (_context.Orders != null)
+            {
+                var order = _context.Orders.Where(order => order.Id == id);
+                if (order.Any())
+                    return order.First();
+            }
+            return new Order();
+        }
+
+        public void AddOrder(Order order)
+        {
+            if (_context.Orders != null)
+            {
+                _context.Orders.Add(order);
+                _context.SaveChanges();
             }
         }
 
-        public static Order GetOrderById(long id)
+        public void UpdateOrder(Order order)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Orders != null)
             {
-                var order = database.Orders.Where(order => order.Id == id).FirstOrDefault();
-
-                return order;
+                _context.Orders.Update(order);
+                _context.SaveChanges();
             }
         }
 
-        public static void AddOrder(Order order)
+        public void DeleteOrder(Order order)
         {
-            using (var database = new RestaurantContext())
+            if (_context.Orders != null)
             {
-                database.Orders.Add(order);
-
-                database.SaveChanges();
-            }
-        }
-
-        public static void UpdateOrder(Order order)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.Orders.Update(order);
-
-                database.SaveChanges();
-            }
-        }
-
-        public static void DeleteOrder(Order order)
-        {
-            using (var database = new RestaurantContext())
-            {
-                database.Orders.Remove(order);
-
-                database.SaveChanges();
+                _context.Orders.Remove(order);
+                _context.SaveChanges();
             }
         }
     }

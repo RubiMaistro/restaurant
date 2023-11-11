@@ -20,6 +20,10 @@ namespace Restaurant_Common.Models
         [Required]
         public DateTime OrderDate { get; set; }
 
+        public OrderedFood()
+        {
+
+        }
         public OrderedFood(int foodId, int orderId)
         {
             FoodId = foodId;
