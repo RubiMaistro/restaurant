@@ -31,9 +31,25 @@ namespace Restaurant_WebApiServer.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(Food))]
-        public IActionResult Get(long id)
+        public IActionResult Get(int id)
         {
-            var food = _foodRepository.GetFoodById(id);
+            var food = _foodRepository.GetFirstFoodByParameter(nameof(IFood.Id), id);
+
+            if (food != null)
+            {
+                return Ok(food);
+            }
+            else
+            {
+                return NotFound("Food not found!");
+            }
+        }
+        
+        [HttpGet("foodtype/{typeId}")]
+        [ProducesResponseType(200, Type = typeof(IList<Food>))]
+        public IActionResult GetByFoodTypeId(int typeId)
+        {
+            var food = _foodRepository.GetFoodsByParameter(nameof(IFood.FoodTypeId), typeId);
 
             if (food != null)
             {
@@ -68,7 +84,7 @@ namespace Restaurant_WebApiServer.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
-        public IActionResult Put(Food food, long id)
+        public IActionResult Put(Food food, int id)
         {
             var FoodFromDb = _foodRepository.GetFoodById(id);
 
@@ -84,7 +100,7 @@ namespace Restaurant_WebApiServer.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
-        public IActionResult Delete(long id)
+        public IActionResult Delete(int id)
         {
             var food = _foodRepository.GetFoodById(id);
 
