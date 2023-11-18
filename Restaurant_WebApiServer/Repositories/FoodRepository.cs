@@ -11,16 +11,12 @@ namespace Restaurant_WebApiServer.Repositories
         {
             _context = context;
         }
-
         public IList<Food> GetFoods()
         {
             if (_context.Foods != null)
                 return _context.Foods.ToList();
             return new List<Food>();
         }
-
-        public Food GetFoodById(int foodId) => _context.Foods?.FirstOrDefault(f => f.Id == foodId) ?? new Food();
-
         public Food GetFirstFoodByParameter<T>(string propertyName, T value)
         {
             if (value is null) 
@@ -28,7 +24,6 @@ namespace Restaurant_WebApiServer.Repositories
             return GetFoodsByParameter(propertyName, value).FirstOrDefault() 
                 ?? new();
         }
-
         public IList<Food> GetFoodsByParameter<T>(string propertyName, T value)
         {
             if (value is null) 
@@ -37,25 +32,22 @@ namespace Restaurant_WebApiServer.Repositories
                 => value.Equals(food.GetType().GetProperty(propertyName)?.GetValue(food))).ToList() 
                 ?? new();
         }
-        
         public void AddFood(Food food)
         {
             _context.Foods?.Add(food);
             _context.SaveChanges();
         }
-
         public void UpdateFood(Food food)
         {
             _context.Foods?.Update(food);
             _context.SaveChanges();
         }
-
         public void DeleteFood(Food food)
         {
             _context.Foods?.Remove(food);
             _context.SaveChanges();
         }
-
         
+
     }
 }

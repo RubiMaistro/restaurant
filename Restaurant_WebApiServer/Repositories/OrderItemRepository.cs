@@ -10,14 +10,14 @@ namespace Restaurant_WebApiServer.Repositories
         {
             _context = context;
         }
-        public IList<OrderItem> GetOrders()
+        public IList<OrderItem> GetOrderItems()
         {
             if (_context.OrderedFoods != null)
                 return _context.OrderedFoods.ToList();
             return new List<OrderItem>();
         }
 
-        public OrderItem GetOrderById(long id)
+        public OrderItem GetOrderItemById(long id)
         {
             if (_context.OrderedFoods != null)
             {
@@ -28,22 +28,22 @@ namespace Restaurant_WebApiServer.Repositories
             return new OrderItem();
         }
 
-        public void AddOrder(OrderItem order)
+        public void AddOrderItem(OrderItem order)
         {
-            if (_context.OrderedFoods != null)
-            {
-                _context.OrderedFoods.Add(order);
-                _context.SaveChanges();
-            }
+            _context.OrderedFoods?.Add(order);
+            _context.SaveChanges();
+        }
+        
+        public void UpdateOrderItem(OrderItem order)
+        {
+            _context.OrderedFoods?.Update(order);
+            _context.SaveChanges();
         }
 
-        public void DeleteOrder(OrderItem order)
+        public void DeleteOrderItem(OrderItem order)
         {
-            if (_context.OrderedFoods != null)
-            {
-                _context.OrderedFoods.Remove(order);
-                _context.SaveChanges();
-            }
+            _context.OrderedFoods?.Remove(order);
+            _context.SaveChanges();
         }
     }
 }

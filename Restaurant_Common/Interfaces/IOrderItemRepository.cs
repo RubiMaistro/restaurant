@@ -1,16 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurant_Common.Interfaces
+﻿namespace Restaurant_Common.Interfaces
 {
     public interface IOrderItemRepository
     {
-        public IList<OrderItem> GetOrders();
-        public OrderItem GetOrderById(long id);
-        public void AddOrder(OrderItem order);
-        public void DeleteOrder(OrderItem order);
+        /// <summary>
+        /// Get all OrderItems from database
+        /// </summary>
+        /// <returns></returns>
+        public IList<OrderItem> GetOrderItems();
+        /// <summary>
+        /// Get an OrderItem from database by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public OrderItem GetOrderItemById(long id);
+        /// <summary>
+        /// Add an OrderItem to database
+        /// </summary>
+        /// <param name="order"></param>
+        public void AddOrderItem(OrderItem order);
+        /// <summary>
+        /// Update an OrderItem in database
+        /// </summary>
+        /// <param name="order"></param>
+        public void UpdateOrderItem(OrderItem order);
+        /// <summary>
+        /// Delete an OrderItem from database
+        /// </summary>
+        /// <param name="order"></param>
+        public void DeleteOrderItem(OrderItem order);
     }
 }

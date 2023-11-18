@@ -16,7 +16,7 @@
         /// <returns></returns>
         public Order GetFirstOrderByParameter<T>(string propertyName, T value);
         /// <summary>
-        /// Get all Food object from database by parameter
+        /// Get all Order object from database by parameter
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyName"></param>
@@ -29,7 +29,7 @@
         /// <param name="order"></param>
         public void AddOrder(Order order);
         /// <summary>
-        /// Update an Order object from database
+        /// Update an Order object in database
         /// </summary>
         /// <param name="order"></param>
         public void UpdateOrder(Order order);
