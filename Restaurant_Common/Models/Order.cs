@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Restaurant_Common.Models
 {
-    public class Order
+    public class Order : IOrder
     {
         [Key]
         public int Id { get; set; }
