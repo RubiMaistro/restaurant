@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Common.Models
 {
-    public class OrderedFood
+    public class OrderedFood : IFood
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -19,6 +19,11 @@ namespace Restaurant_Common.Models
         public int OrderId { get; set; }
         [Required]
         public DateTime OrderDate { get; set; }
+        public int FoodTypeId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public string ImageUrl { get; set; }
 
         public OrderedFood()
         {

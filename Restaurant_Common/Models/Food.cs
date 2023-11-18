@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Common.Models
 {
-    public class Food
+    public class Food : IFood
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
