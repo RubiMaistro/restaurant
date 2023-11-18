@@ -87,7 +87,7 @@
         // add ordered foods
         foreach(var food in Cart.Foods)
         {
-            await HttpClient.PostAsJsonAsync("food/ordered", new OrderedFood(food.Id, Cart.Order.Id));
+            await HttpClient.PostAsJsonAsync("food/ordered", new OrderItem(food.Id, Cart.Order.Id, 1));
             NavigationManager.NavigateTo("/");
         }
 

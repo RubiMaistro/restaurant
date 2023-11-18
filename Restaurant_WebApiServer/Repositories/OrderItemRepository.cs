@@ -3,21 +3,21 @@ using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
 {
-    public class OrderedFoodRepository : IOrderedFoodRepository
+    public class OrderItemRepository : IOrderItemRepository
     {
         private readonly RestaurantContext _context;
-        public OrderedFoodRepository(RestaurantContext context)
+        public OrderItemRepository(RestaurantContext context)
         {
             _context = context;
         }
-        public IList<OrderedFood> GetOrders()
+        public IList<OrderItem> GetOrders()
         {
             if (_context.OrderedFoods != null)
                 return _context.OrderedFoods.ToList();
-            return new List<OrderedFood>();
+            return new List<OrderItem>();
         }
 
-        public OrderedFood GetOrderById(long id)
+        public OrderItem GetOrderById(long id)
         {
             if (_context.OrderedFoods != null)
             {
@@ -25,10 +25,10 @@ namespace Restaurant_WebApiServer.Repositories
                 if (orderedFood.Any())
                     return orderedFood.First();
             }
-            return new OrderedFood();
+            return new OrderItem();
         }
 
-        public void AddOrder(OrderedFood order)
+        public void AddOrder(OrderItem order)
         {
             if (_context.OrderedFoods != null)
             {
@@ -37,7 +37,7 @@ namespace Restaurant_WebApiServer.Repositories
             }
         }
 
-        public void DeleteOrder(OrderedFood order)
+        public void DeleteOrder(OrderItem order)
         {
             if (_context.OrderedFoods != null)
             {

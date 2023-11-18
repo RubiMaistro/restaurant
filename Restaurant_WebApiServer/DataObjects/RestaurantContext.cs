@@ -12,7 +12,7 @@ public partial class RestaurantContext : DbContext
     public DbSet<Food>? Foods { get; set; }
     public DbSet<FoodType>? FoodTypes { get; set; }
     public DbSet<Order>? Orders { get; set; }
-    public DbSet<OrderedFood>? OrderedFoods { get; set; }
+    public DbSet<OrderItem>? OrderedFoods { get; set; }
 
     public RestaurantContext()
     {

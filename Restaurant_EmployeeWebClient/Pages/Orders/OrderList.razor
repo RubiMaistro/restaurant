@@ -61,7 +61,7 @@
         foreach(var order in Orders)
         {
             ShoppingCartModel orderModel = new ShoppingCartModel();
-            var allOrdersFromDb = await HttpClient.GetFromJsonAsync<List<OrderedFood>>("food/ordered");
+            var allOrdersFromDb = await HttpClient.GetFromJsonAsync<List<OrderItem>>("food/ordered");
             var allFoodsFromDb = await HttpClient.GetFromJsonAsync<List<Food>>("food");
 
             orderModel.Order = order;

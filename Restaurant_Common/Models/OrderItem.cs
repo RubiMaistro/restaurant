@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restaurant_Common.Models
 {
-    public class OrderedFood : IFood
+    public class OrderItem : IOrderItem
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -19,21 +15,20 @@ namespace Restaurant_Common.Models
         public int OrderId { get; set; }
         [Required]
         public DateTime OrderDate { get; set; }
-        public int FoodTypeId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Price { get; set; }
-        public string ImageUrl { get; set; }
+        [Required]
+        public int Quantity { get; set; }
 
-        public OrderedFood()
+
+        public OrderItem()
         {
 
         }
-        public OrderedFood(int foodId, int orderId)
+        public OrderItem(int foodId, int orderId, int quantity)
         {
             FoodId = foodId;
             OrderId = orderId;
             OrderDate = DateTime.Now;
+            Quantity = quantity;
         }
     }
 }

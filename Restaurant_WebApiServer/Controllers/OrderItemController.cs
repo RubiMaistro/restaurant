@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Restaurant_Common.Models;
-using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer.Controllers
 {
     [ApiController]
     [Route("api/food/ordered")]
-    public class OrderedFoodController : Controller
+    public class OrderItemController : Controller
     {
-        private readonly IOrderedFoodRepository _orderedFoodRepository;
-        public OrderedFoodController(IOrderedFoodRepository orderedFoodRepository)
+        private readonly IOrderItemRepository _orderedFoodRepository;
+        public OrderItemController(IOrderItemRepository orderedFoodRepository)
         {
             _orderedFoodRepository = orderedFoodRepository;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<OrderedFood>> Get()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OrderItem>))]
+        public IActionResult Get()
         {
             var foods = _orderedFoodRepository.GetOrders();
 
@@ -23,11 +22,12 @@ namespace Restaurant_WebApiServer.Controllers
                 return Ok(foods);
             }
 
-            return NotFound("No ordered foods to display!");
+            return NotFound("No ordered food items to display!");
         }
 
         [HttpGet("{id}")]
-        public ActionResult<OrderedFood> Get(long id)
+        [ProducesResponseType(200, Type = typeof(OrderItem))]
+        public IActionResult Get(long id)
         {
             var food = _orderedFoodRepository.GetOrderById(id);
 
@@ -37,20 +37,22 @@ namespace Restaurant_WebApiServer.Controllers
             }
             else
             {
-                return NotFound("Ordered food not found!");
+                return NotFound("Ordered food item not found!");
             }
         }
 
         [HttpPost]
-        public ActionResult Post(OrderedFood food)
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult Post(OrderItem food)
         {
             _orderedFoodRepository.AddOrder(food);
 
-            return Ok($"The {food.FoodId} id of food adding successful!");
+            return Ok($"The {food.FoodId} id of food item adding successful!");
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(long id)
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult Delete(long id)
         {
             var food = _orderedFoodRepository.GetOrderById(id);
 
@@ -58,7 +60,7 @@ namespace Restaurant_WebApiServer.Controllers
             {
                 _orderedFoodRepository.DeleteOrder(food);
 
-                return Ok($"The {food.Id} id of food deleting successful!");
+                return Ok($"The {food.Id} id of food item deleting successful!");
             }
 
             return NotFound("Food not found!");
