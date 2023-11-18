@@ -1,4 +1,6 @@
-﻿using Restaurant_WebApiServer.DataObjects;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Restaurant_Common.Models;
+using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
 {
@@ -17,42 +19,43 @@ namespace Restaurant_WebApiServer.Repositories
             return new List<Food>();
         }
 
-        public Food GetFoodById(long id)
+        public Food GetFoodById(int foodId) => _context.Foods?.FirstOrDefault(f => f.Id == foodId) ?? new Food();
+
+        public Food GetFirstFoodByParameter<T>(string propertyName, T value)
         {
-            if (_context.Foods != null)
-            {
-                var foods = _context.Foods.Where(food => food.Id == id);
-                if (foods.Any())
-                    return foods.First();
-            }
-            return new Food();
+            if (value is null) 
+                return new(); 
+            return GetFoodsByParameter(propertyName, value).FirstOrDefault() 
+                ?? new();
         }
 
+        public IList<Food> GetFoodsByParameter<T>(string propertyName, T value)
+        {
+            if (value is null) 
+                return new List<Food>(); 
+            return _context.Foods?.AsEnumerable().Where(food 
+                => value.Equals(food.GetType().GetProperty(propertyName)?.GetValue(food))).ToList() 
+                ?? new();
+        }
+        
         public void AddFood(Food food)
         {
-            if (_context.Foods != null)
-            {
-                _context.Foods.Add(food);
-                _context.SaveChanges();
-            }
+            _context.Foods?.Add(food);
+            _context.SaveChanges();
         }
 
         public void UpdateFood(Food food)
         {
-            if (_context.Foods != null)
-            {
-                _context.Foods.Update(food);
-                _context.SaveChanges();
-            }
+            _context.Foods?.Update(food);
+            _context.SaveChanges();
         }
 
         public void DeleteFood(Food food)
         {
-            if (_context.Foods != null)
-            {
-                _context.Foods.Remove(food);
-                _context.SaveChanges();
-            }
+            _context.Foods?.Remove(food);
+            _context.SaveChanges();
         }
+
+        
     }
 }
