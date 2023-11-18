@@ -24,12 +24,6 @@
         /// <returns></returns>
         public IList<Order> GetOrdersByParameter<T>(string propertyName, T value);
         /// <summary>
-        /// Get an Order object from database by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Order GetOrderById(long id);
-        /// <summary>
         /// Add an Order object to database
         /// </summary>
         /// <param name="order"></param>

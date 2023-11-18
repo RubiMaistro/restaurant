@@ -26,12 +26,10 @@ namespace Restaurant_WebApiServer.Repositories
         {
             if (value is null)
                 return new List<Order>();
-            return _context.Orders?.AsEnumerable().Where(order
+            return _context.Orders?.AsNoTracking().AsEnumerable().Where(order
                 => value.Equals(order.GetType().GetProperty(propertyName)?.GetValue(order))).ToList()
-                ?? new();
+                ?? new List<Order>();
         }
-        public Order GetOrderById(long id) => _context.Orders?
-            .FirstOrDefault(order => order.Id == id) ?? new Order();
         public void AddOrder(Order order)
         {
             _context.Orders?.Add(order);
@@ -39,8 +37,15 @@ namespace Restaurant_WebApiServer.Repositories
         }
         public void UpdateOrder(Order order)
         {
-            _context.Orders?.Update(order);
-            _context.SaveChanges();
+            var exist = GetFirstOrderByParameter(nameof(IOrder.Id), order.Id);
+
+            if (exist != null)
+            {
+                exist.Price = order.Price;
+                exist.Status = order.Status;
+                _context.Orders?.Update(exist);
+                _context.SaveChanges();
+            }
         }
         public void DeleteOrder(Order order)
         {
