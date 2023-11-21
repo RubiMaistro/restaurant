@@ -1,4 +1,6 @@
-﻿namespace Restaurant_Common.Interfaces
+﻿using Restaurant_Common.Models.Filter;
+
+namespace Restaurant_Common.Interfaces
 {
     public interface IFoodRepository
     {
@@ -6,7 +8,7 @@
         /// Get all Food object from database
         /// </summary>
         /// <returns></returns>
-        public IList<Food> GetFoods();
+        public Task<IEnumerable<Food>> GetFoodsAsync(QueryParameters parameters);
         /// <summary>
         /// Get first Food object from database by parameter
         /// </summary>

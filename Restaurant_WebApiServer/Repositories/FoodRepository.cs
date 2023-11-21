@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Restaurant_Common.Models;
+using Restaurant_Common.Models.Filter;
 using Restaurant_WebApiServer.DataObjects;
 
 namespace Restaurant_WebApiServer.Repositories
@@ -11,18 +12,26 @@ namespace Restaurant_WebApiServer.Repositories
         {
             _context = context;
         }
-        public IList<Food> GetFoods()
+        
+        public async Task<IEnumerable<Food>> GetFoodsAsync(QueryParameters parameters)
         {
             if (_context.Foods != null)
-                return _context.Foods.ToList();
+            {
+                var allFoods = _context.Foods.AsQueryable();
+                var pagedFoods = await allFoods
+                    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                    .Take(parameters.PageSize)
+                    .ToListAsync();
+
+                return pagedFoods;
+            }
             return new List<Food>();
         }
         public Food GetFirstFoodByParameter<T>(string propertyName, T value)
         {
             if (value is null) 
                 return new(); 
-            return GetFoodsByParameter(propertyName, value).FirstOrDefault() 
-                ?? new();
+            return GetFoodsByParameter(propertyName, value).FirstOrDefault() ?? new();
         }
         public IList<Food> GetFoodsByParameter<T>(string propertyName, T value)
         {
