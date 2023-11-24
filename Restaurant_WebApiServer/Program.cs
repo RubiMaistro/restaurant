@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Restaurant_Common.Interfaces.Repositories;
 using Restaurant_WebApiServer.DataObjects;
 using Restaurant_WebApiServer.Repositories;
 
@@ -58,6 +59,7 @@ namespace Restaurant_WebApiServer
 
             // CORS enabled
             services.AddCors();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IFoodRepository, FoodRepository>();
             services.AddScoped<IFoodTypeRepository, FoodTypeRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();

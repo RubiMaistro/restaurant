@@ -17,7 +17,7 @@ namespace Restaurant_WebApiServer.Repositories
         {
             if (_context.Foods != null)
             {
-                var allFoods = _context.Foods.AsQueryable();
+                var allFoods = _context.Foods.AsTracking().AsQueryable();
                 var pagedFoods = await allFoods
                     .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                     .Take(parameters.PageSize)
@@ -37,7 +37,7 @@ namespace Restaurant_WebApiServer.Repositories
         {
             if (value is null) 
                 return new List<Food>(); 
-            return _context.Foods?.AsEnumerable().Where(food 
+            return _context.Foods?.AsTracking().AsEnumerable().Where(food 
                 => value.Equals(food.GetType().GetProperty(propertyName)?.GetValue(food))).ToList() 
                 ?? new();
         }

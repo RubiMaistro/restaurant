@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Restaurant_Common.Interfaces.Repositories;
 using Restaurant_Common.Models;
 using Restaurant_WebApiServer.Repositories;
 
@@ -8,16 +9,16 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food/type")]
     public class FoodTypeController : Controller
     {
-        private readonly IFoodTypeRepository _foodTypeRepository;
+        private readonly IRepositoryWrapper _repository;
 
-        public FoodTypeController(IFoodTypeRepository foodTypeRepository)
+        public FoodTypeController(IRepositoryWrapper repositoryWrapper)
         {
-            _foodTypeRepository = foodTypeRepository;
+            _repository = repositoryWrapper;
         }
         [HttpGet]
         public ActionResult<IEnumerable<FoodType>> Get()
         {
-            var types = _foodTypeRepository.GetFoodTypes();
+            var types = _repository.FoodTypeRepository.FindAll();
 
             if (types != null)
             {
@@ -30,7 +31,7 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpGet("{id}")]
         public ActionResult<FoodType> Get(long id)
         {
-            var type = _foodTypeRepository.GetFoodTypeById(id);
+            var type = _repository.FoodTypeRepository.FindByCondition(x => x.Id.Equals(id)).FirstOrDefault();
 
             if (type != null)
             {
@@ -45,7 +46,8 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPost]
         public ActionResult Post(FoodType type)
         {
-            _foodTypeRepository.AddFoodType(type);
+            _repository.FoodTypeRepository.Create(type);
+            _repository.Save();
 
             return Ok($"{type.Name} food type adding successful!");
         }
@@ -53,28 +55,33 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(FoodType type, long id)
         {
-            var FoodTypeFromDb = _foodTypeRepository.GetFoodTypeById(id);
+            var FoodTypeFromDb = _repository.FoodTypeRepository.FindByCondition(x => x.Id == id).FirstOrDefault();
 
             if (FoodTypeFromDb != null)
             {
-                _foodTypeRepository.UpdateFoodType(type);
+                _repository.FoodTypeRepository.Update(type);
+                _repository.Save();
 
                 return Ok($"{type.Name} food type updating successful!");
             }
+            else
+            {
+                _repository.FoodTypeRepository.Create(type);
+                _repository.Save();
+            }
 
             return NotFound("Food not found!");
-
-            
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete(long id)
         {
-            var type = _foodTypeRepository.GetFoodTypeById(id);
+            var type = _repository.FoodTypeRepository.FindByCondition(x => x.Id.Equals(id)).FirstOrDefault();
 
             if (type != null)
             {
-                _foodTypeRepository.DeleteFoodType(type);
+                _repository.FoodTypeRepository.Delete(type);
+                _repository.Save();
 
                 return Ok($"{type.Name} food type deleting successful!");
             }
