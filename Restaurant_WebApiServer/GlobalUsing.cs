@@ -5,3 +5,4 @@ global using Restaurant_Common.Models;
 global using MySql.EntityFrameworkCore;
 global using Restaurant_Common.Interfaces;
 global using Restaurant_Common.Interfaces.Models;
+global using Restaurant_Common.Extensions;

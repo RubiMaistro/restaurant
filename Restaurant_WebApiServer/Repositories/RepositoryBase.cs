@@ -1,6 +1,8 @@
 ﻿using Restaurant_Common.Interfaces.Repositories;
+using Restaurant_Common.Models.Filter;
 using Restaurant_WebApiServer.DataObjects;
 using System.Linq.Expressions;
+using System.Security;
 
 namespace Restaurant_WebApiServer.Repositories
 {
@@ -11,9 +13,15 @@ namespace Restaurant_WebApiServer.Repositories
         {
             RestaurantContext = restaurantContext;
         }
-        public IQueryable<T> FindAll() => RestaurantContext.Set<T>().AsNoTracking();
+        public IQueryable<T> FindAll() =>
+             RestaurantContext.Set<T>()
+                .AsNoTracking()
+                .AsQueryable();
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> condition) => 
-            RestaurantContext.Set<T>().Where(condition).AsNoTracking();
+            RestaurantContext.Set<T>()
+            .Where(condition)
+            .AsNoTracking()
+            .AsQueryable();
         public void Create(T entity) => RestaurantContext.Set<T>().Add(entity);
         public void Update(T entity) => RestaurantContext.Set<T>().Update(entity);
         public void Delete(T entity) => RestaurantContext.Set<T>().Remove(entity);

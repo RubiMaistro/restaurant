@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Restaurant_Common.Interfaces.Repositories;
 using Restaurant_Common.Models;
+using Restaurant_Common.Models.Filter;
 using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer.Controllers
@@ -16,9 +17,12 @@ namespace Restaurant_WebApiServer.Controllers
             _repository = repositoryWrapper;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<FoodType>> Get()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FoodType>))]
+        public IActionResult Get([FromQuery] QueryParameters parameters)
         {
-            var types = _repository.FoodTypeRepository.FindAll();
+            var types = _repository.FoodTypeRepository
+                .FindAll()
+                .GetByQueryParameters(parameters);
 
             if (types != null)
             {
@@ -29,22 +33,24 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<FoodType> Get(long id)
+        [ProducesResponseType(200, Type = typeof(FoodType))]
+        [ProducesResponseType(404, Type = typeof(FoodType))]
+        public IActionResult Get([FromQuery] QueryParameters parameters, long id)
         {
-            var type = _repository.FoodTypeRepository.FindByCondition(x => x.Id.Equals(id)).FirstOrDefault();
+            var type = _repository.FoodTypeRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .GetByQueryParameters(parameters)
+                .FirstOrDefault();
 
             if (type != null)
-            {
                 return Ok(type);
-            }
             else
-            {
                 return NotFound("Food type not found!");
-            }
         }
 
         [HttpPost]
-        public ActionResult Post(FoodType type)
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult Post(FoodType type)
         {
             _repository.FoodTypeRepository.Create(type);
             _repository.Save();
@@ -53,9 +59,13 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(FoodType type, long id)
+        [ProducesResponseType(200, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public IActionResult Put(FoodType type, long id)
         {
-            var FoodTypeFromDb = _repository.FoodTypeRepository.FindByCondition(x => x.Id == id).FirstOrDefault();
+            var FoodTypeFromDb = _repository.FoodTypeRepository
+                .FindByCondition(x => x.Id == id)
+                .FirstOrDefault();
 
             if (FoodTypeFromDb != null)
             {
@@ -74,9 +84,13 @@ namespace Restaurant_WebApiServer.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(long id)
+        [ProducesResponseType(200, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public IActionResult Delete(long id)
         {
-            var type = _repository.FoodTypeRepository.FindByCondition(x => x.Id.Equals(id)).FirstOrDefault();
+            var type = _repository.FoodTypeRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
             if (type != null)
             {
