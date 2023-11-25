@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Restaurant_Common.Interfaces.Repositories;
-using Restaurant_Common.Models;
-using Restaurant_Common.Models.Filter;
-using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer.Controllers
 {
@@ -35,11 +31,10 @@ namespace Restaurant_WebApiServer.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(FoodType))]
         [ProducesResponseType(404, Type = typeof(FoodType))]
-        public IActionResult Get([FromQuery] QueryParameters parameters, long id)
+        public IActionResult Get(long id)
         {
             var type = _repository.FoodTypeRepository
                 .FindByCondition(x => x.Id.Equals(id))
-                .GetByQueryParameters(parameters)
                 .FirstOrDefault();
 
             if (type != null)

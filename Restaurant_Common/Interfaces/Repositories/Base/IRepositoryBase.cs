@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restaurant_Common.Interfaces.Repositories
+namespace Restaurant_Common.Interfaces.Repositories.Base
 {
     public interface IRepositoryBase<T>
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Restaurant_Common.Models.Filter;
 
 namespace Restaurant_WebApiServer.Controllers
 {
@@ -7,17 +6,17 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food")]
     public class FoodController : Controller
     {
-        private readonly IFoodRepository _foodRepository;
-        public FoodController(IFoodRepository foodRepository)
+        private readonly IRepositoryWrapper _repository;
+        public FoodController(IRepositoryWrapper epositoryWrapper)
         {
-            _foodRepository = foodRepository;
+            _repository = epositoryWrapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Food>))]
-        public async Task<IActionResult> Get([FromQuery] QueryParameters parameters)
+        public IActionResult Get([FromQuery] QueryParameters parameters)
         {
-            var foods = await _foodRepository.GetFoodsAsync(parameters);
+            var foods = _repository.FoodRepository.FindAll().GetByQueryParameters(parameters);
             if (foods != null)
                 return Ok(foods);
 
@@ -28,22 +27,26 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200, Type = typeof(Food))]
         public IActionResult Get(int id)
         {
-            var food = _foodRepository.GetFirstFoodByParameter(nameof(IFood.Id), id);
+            var food = _repository.FoodRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (food.Id > 0)
+            if (food != null)
                 return Ok(food);
 
             return NotFound("Food not found!");
         }
         
         [HttpGet("foodtype/{typeId}")]
-        [ProducesResponseType(200, Type = typeof(IList<Food>))]
-        public IActionResult GetByFoodTypeId(int typeId)
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Food>))]
+        public IActionResult GetByFoodTypeId([FromQuery] QueryParameters parameters, int typeId)
         {
-            var food = _foodRepository.GetFoodsByParameter(nameof(IFood.FoodTypeId), typeId);
+            var foods = _repository.FoodRepository
+                .FindByCondition(x => x.FoodTypeId.Equals(typeId))
+                .GetByQueryParameters(parameters);
 
-            if (food != null)
-                return Ok(food);
+            if (foods != null)
+                return Ok(foods);
             else
                 return NotFound("Food not found!");
         }
@@ -55,12 +58,14 @@ namespace Restaurant_WebApiServer.Controllers
             if (foodCreate == null)
                 return BadRequest(foodCreate);
 
-            var existFood = _foodRepository.GetFirstFoodByParameter(nameof(IFood.Name), foodCreate.Name);
+            var existFood = _repository.FoodRepository
+                .FindByCondition(x => x.Name.Equals(foodCreate.Name))
+                .FirstOrDefault();
 
-            if (existFood.Id > 0)
+            if (existFood != null)
                 return UnprocessableEntity(foodCreate); // Food is already exist
 
-            _foodRepository.AddFood(foodCreate);
+            _repository.FoodRepository.Create(foodCreate);
 
             return Ok($"{foodCreate.Name} food adding successful!");
         }
@@ -69,16 +74,18 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Put(Food food, int id)
         {
-            var existFood = _foodRepository.GetFirstFoodByParameter(nameof(IFood.Id), id);
+            var existFood = _repository.FoodRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (existFood.Id > 0)
+            if (existFood != null)
             {
-                _foodRepository.UpdateFood(food);
+                _repository.FoodRepository.Update(food);
                 return Ok($"{food.Name} food updating successful!");
             }
             else
             {
-                _foodRepository.AddFood(food);
+                _repository.FoodRepository.Create(food);
                 return Ok($"{food.Name} food adding successful!");
             }
         }
@@ -87,11 +94,13 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Delete(int id)
         {
-            var existFood = _foodRepository.GetFirstFoodByParameter(nameof(IFood.Id), id);
+            var existFood = _repository.FoodRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (existFood.Id > 0)
+            if (existFood != null)
             {
-                _foodRepository.DeleteFood(existFood);
+                _repository.FoodRepository.Delete(existFood);
 
                 return Ok($"{existFood.Name} food deleting successful!");
             }

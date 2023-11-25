@@ -1,4 +1,4 @@
-﻿namespace Restaurant_Common.Interfaces
+﻿namespace Restaurant_Common.Interfaces.Repositories.Implementations
 {
     public interface IOrderItemRepository
     {

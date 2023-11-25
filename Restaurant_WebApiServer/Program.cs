@@ -1,8 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Restaurant_Common.Interfaces.Repositories;
+using Restaurant_Common.Interfaces.Repositories.Base;
 using Restaurant_WebApiServer.DataObjects;
-using Restaurant_WebApiServer.Repositories;
 
 namespace Restaurant_WebApiServer
 {

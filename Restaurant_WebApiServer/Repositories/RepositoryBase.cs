@@ -1,4 +1,4 @@
-﻿using Restaurant_Common.Interfaces.Repositories;
+﻿using Restaurant_Common.Interfaces.Repositories.Base;
 using Restaurant_Common.Models.Filter;
 using Restaurant_WebApiServer.DataObjects;
 using System.Linq.Expressions;
