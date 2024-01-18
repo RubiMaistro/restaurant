@@ -6,37 +6,46 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/order")]
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly IRepositoryWrapper _repository;
+        public OrderController(IRepositoryWrapper repository)
         {
-            _orderRepository = orderRepository;
+            _repository = repository;
         }
+
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Order>))]
-        public IActionResult GetAll()
+        public IActionResult Get([FromQuery] QueryParameters parameters)
         {
-            var orders = _orderRepository.GetOrders();
-
+            var orders = _repository.OrderRepository
+                .FindAll()
+                .GetByQueryParameters(parameters);
             if (orders != null)
                 return Ok(orders);
 
             return NotFound("No orders to display!");
         }
+
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(Order))]
         public IActionResult GetById(int id)
         {
-            var order = _orderRepository.GetFirstOrderByParameter(nameof(IOrder.Id), id);
+            var order = _repository.OrderRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
+
             if (order != null)
                 return Ok(order);
-            else
-                return NotFound("Order not found!");
+
+            return NotFound("Order not found!");
         }
+
         [HttpGet("status/{status}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Order>))]
         public IActionResult GetAllByStatus(OrderStatus status)
         {
-            var orders = _orderRepository.GetOrdersByParameter(nameof(IOrder.Status), status);
+            var orders = _repository.OrderRepository
+                .FindByCondition(x => x.Status.Equals(status))
+                .ToList();
 
             if (orders != null && orders.Count > 0)
                 return Ok(orders);
@@ -45,10 +54,12 @@ namespace Restaurant_WebApiServer.Controllers
         }
         [HttpGet("price/{price}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Order>))]
-        public IActionResult GetAllByStatus(double price)
+        public IActionResult GetAllByPrice(double price)
         {
-            var orders = _orderRepository.GetOrdersByParameter(nameof(IOrder.Price), price);
-
+            var orders = _repository.OrderRepository
+                .FindByCondition(x => x.Price.Equals(price))
+                .ToList();
+                
             if (orders != null && orders.Count > 0)
                 return Ok(orders);
 
@@ -56,38 +67,58 @@ namespace Restaurant_WebApiServer.Controllers
         }
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
-        public IActionResult Post(Order order)
+        public IActionResult Post(Order orderCreate)
         {
-            _orderRepository.AddOrder(order);
+            if (orderCreate == null)
+                return BadRequest(orderCreate);
 
-            return Ok($"The '{order.Id}' id of order adding successful!");
+            var existingOrder = _repository.OrderRepository
+                .FindByCondition(x => x.Id == orderCreate.Id)
+                .FirstOrDefault();
+
+            if (existingOrder != null)
+                return UnprocessableEntity(orderCreate);
+
+            _repository.OrderRepository.Create(orderCreate);
+            _repository.Save();
+
+            return Ok($"The '{orderCreate.Id}' id of order adding successful!");
         }
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Put(Order order, int id)
         {
-            var OrderFromDb = _orderRepository.GetFirstOrderByParameter(nameof(IOrder), id);
+            var existingOrder = _repository.OrderRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (OrderFromDb != null)
+            if (existingOrder != null)
             {
-                _orderRepository.UpdateOrder(order);
-
+                _repository.OrderRepository.Update(order);
+                _repository.Save();
                 return Ok($"{order.Id} order updating successful!");
             }
-
-            return NotFound("Order not found!");
+            else
+            {
+                _repository.OrderRepository.Create(order);
+                _repository.Save();
+                return Ok($"{order.Id} order adding successful!");
+            }
         }
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Delete(int id)
         {
-            var order = _orderRepository.GetFirstOrderByParameter(nameof(IOrder.Id), id);
+            var existingOrder = _repository.OrderRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (order != null)
+            if (existingOrder != null)
             {
-                _orderRepository.DeleteOrder(order);
+                _repository.OrderRepository.Delete(existingOrder);
+                _repository.Save();
 
-                return Ok($"{order.Id} order deleting successful!");
+                return Ok($"{existingOrder.Id} order deleting successful!");
             }
 
             return NotFound("Order not found!");
