@@ -66,6 +66,7 @@ namespace Restaurant_WebApiServer.Controllers
                 return UnprocessableEntity(foodCreate); // Food is already exist
 
             _repository.FoodRepository.Create(foodCreate);
+            _repository.Save();
 
             return Ok($"{foodCreate.Name} food adding successful!");
         }
@@ -81,11 +82,13 @@ namespace Restaurant_WebApiServer.Controllers
             if (existFood != null)
             {
                 _repository.FoodRepository.Update(food);
+                _repository.Save();
                 return Ok($"{food.Name} food updating successful!");
             }
             else
             {
                 _repository.FoodRepository.Create(food);
+                _repository.Save();
                 return Ok($"{food.Name} food adding successful!");
             }
         }
@@ -101,7 +104,7 @@ namespace Restaurant_WebApiServer.Controllers
             if (existFood != null)
             {
                 _repository.FoodRepository.Delete(existFood);
-
+                _repository.Save();
                 return Ok($"{existFood.Name} food deleting successful!");
             }
 

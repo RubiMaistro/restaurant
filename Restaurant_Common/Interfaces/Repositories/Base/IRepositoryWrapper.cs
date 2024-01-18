@@ -27,6 +27,6 @@ namespace Restaurant_Common.Interfaces.Repositories.Base
         /// <summary>
         /// Save all changes made in this context to the database
         /// </summary>
-        void Save();
+        public void Save();
     }
 }
