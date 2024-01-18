@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Restaurant_Common.Models;
 
 namespace Restaurant_WebApiServer.Controllers
 {
@@ -6,20 +7,22 @@ namespace Restaurant_WebApiServer.Controllers
     [Route("api/food/ordered")]
     public class OrderItemController : Controller
     {
-        private readonly IOrderItemRepository _orderItemRepository;
-        public OrderItemController(IOrderItemRepository orderedFoodRepository)
+        private readonly IRepositoryWrapper _repository;
+        public OrderItemController(IRepositoryWrapper repository)
         {
-            _orderItemRepository = orderedFoodRepository;
+            _repository = repository;
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OrderItem>))]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] QueryParameters parameters)
         {
-            var foods = _orderItemRepository.GetOrderItems();
+            var orderItems = _repository.OrderItemRepository
+                .FindAll()
+                .GetByQueryParameters(parameters);
 
-            if (foods != null)
+            if (orderItems != null)
             {
-                return Ok(foods);
+                return Ok(orderItems);
             }
 
             return NotFound("No ordered food items to display!");
@@ -29,53 +32,73 @@ namespace Restaurant_WebApiServer.Controllers
         [ProducesResponseType(200, Type = typeof(OrderItem))]
         public IActionResult Get(long id)
         {
-            var food = _orderItemRepository.GetOrderItemById(id);
+            var orderItem = _repository.OrderItemRepository
+               .FindByCondition(x => x.Id.Equals(id))
+               .FirstOrDefault();
 
-            if (food != null)
-            {
-                return Ok(food);
-            }
-            else
-            {
-                return NotFound("Ordered food item not found!");
-            }
+            if (orderItem != null)
+                return Ok(orderItem);
+            
+            return NotFound("Order Item not found!");
         }
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
-        public IActionResult Post(OrderItem food)
+        public IActionResult Post(OrderItem orderItem)
         {
-            _orderItemRepository.AddOrderItem(food);
+            if (orderItem == null)
+                return BadRequest(orderItem);
 
-            return Ok($"The {food.FoodId} id of food item adding successful!");
+            var existOrderItem = _repository.OrderItemRepository
+                .FindByCondition(x => x.Id.Equals(orderItem.Id))
+                .FirstOrDefault();
+
+            if (existOrderItem != null)
+                return UnprocessableEntity(orderItem);
+
+            _repository.OrderItemRepository.Create(orderItem);
+            _repository.Save();
+
+            return Ok($"The {orderItem.FoodId} id of order item adding successful!");
         }
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Put(OrderItem orderItem, int id)
         {
-            var existsOrderItem = _orderItemRepository.GetOrderItemById(id);
+            if (orderItem == null)
+                return BadRequest(orderItem);
 
-            if (existsOrderItem != null)
+            var existOrderItem = _repository.OrderItemRepository
+                .FindByCondition(x => x.Id.Equals(orderItem.Id))
+                .FirstOrDefault();
+
+            if (existOrderItem != null)
             {
-                _orderItemRepository.UpdateOrderItem(orderItem);
-
-                return Ok($"{orderItem.Id} order updating successful!");
+                _repository.OrderItemRepository.Update(orderItem);
+                _repository.Save();
+                return Ok($"{orderItem.Id} order item updating successful!");
             }
-
-            return NotFound("Order not found!");
+            else
+            {
+                _repository.OrderItemRepository.Create(orderItem);
+                _repository.Save();
+                return Ok($"{orderItem.Id} order item adding successful!");
+            }
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Delete(long id)
         {
-            var food = _orderItemRepository.GetOrderItemById(id);
+            var existOrderItem = _repository.OrderItemRepository
+                .FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefault();
 
-            if (food != null)
+            if (existOrderItem != null)
             {
-                _orderItemRepository.DeleteOrderItem(food);
-
-                return Ok($"The {food.Id} id of food item deleting successful!");
+                _repository.OrderItemRepository.Delete(existOrderItem);
+                _repository.Save();
+                return Ok($"The {existOrderItem.Id} id of order item deleting successful!");
             }
 
             return NotFound("Food not found!");
