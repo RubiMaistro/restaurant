@@ -34,7 +34,7 @@ namespace Restaurant_EmployeeWebClient.Shared
             {
                 foreach (var file in args.Files)
                 {
-                    this.Food.ImageUrl = file.Name;
+                    //this.Food.ImageUrl = file.Name;
 
                     //await HttpClient.PostAsJsonAsync<FormFile>($"file/{file}", (FormFile) file);
                 }

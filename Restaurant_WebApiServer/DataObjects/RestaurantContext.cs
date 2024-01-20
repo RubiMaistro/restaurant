@@ -13,6 +13,7 @@ public partial class RestaurantContext : DbContext
     public DbSet<FoodType>? FoodTypes { get; set; }
     public DbSet<Order>? Orders { get; set; }
     public DbSet<OrderItem>? OrderedFoods { get; set; }
+    public DbSet<Photo> Photos { get; set; }
 
     public RestaurantContext()
     {

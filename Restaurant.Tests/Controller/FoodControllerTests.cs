@@ -2,8 +2,10 @@
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant_Common.Interfaces.Repositories.Base;
 using Restaurant_Common.Interfaces.Repositories.Implementations;
 using Restaurant_Common.Models;
+using Restaurant_Common.Models.Filter;
 using Restaurant_WebApiServer.Controllers;
 using Restaurant_WebApiServer.Repositories;
 using System;
@@ -17,10 +19,12 @@ namespace Restaurant.Tests.Controller
     public class FoodControllerTests
     {
         private readonly IFoodRepository _foodRepository;
+        private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper; 
         public FoodControllerTests()
         {
             _foodRepository = A.Fake<IFoodRepository>();
+            _repository = A.Fake<IRepositoryWrapper>();
             _mapper = A.Fake<IMapper>();
         }
 
@@ -31,10 +35,11 @@ namespace Restaurant.Tests.Controller
             var foods = A.Fake<ICollection<Food>>();
             var foodList = A.Fake<List<Food>>();
             A.CallTo(() => _mapper.Map<List<Food>>(foods)).Returns(foodList);
-            var controller = new FoodController(_foodRepository);
+            var controller = new FoodController(_repository);
 
             //Act
-            var result = controller.Get();
+            var parameters = new QueryParameters();
+            var result = controller.Get(parameters);
 
             //Assert
             result.Should().NotBeNull();
@@ -54,9 +59,9 @@ namespace Restaurant.Tests.Controller
             //A.CallTo(() => _foodRepository.GetFoods().Where(c => c.Name.Trim().ToUpper() == foodCreate.Name.TrimEnd().ToUpper())
             //    .FirstOrDefault()).Returns(food);
             A.CallTo(() => _mapper.Map<Food>(foodCreate)).Returns(food);
-            A.CallTo(() => _foodRepository.AddFood(foodMap));
+            A.CallTo(() => _foodRepository.Create(foodMap));
 
-            var controller = new FoodController(_foodRepository);
+            var controller = new FoodController(_repository);
 
             //Act
             var result = controller.Post(foodCreate);

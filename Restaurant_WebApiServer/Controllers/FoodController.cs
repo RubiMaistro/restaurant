@@ -53,22 +53,71 @@ namespace Restaurant_WebApiServer.Controllers
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
-        public IActionResult Post(Food foodCreate)
+        public async Task<IActionResult> Post([FromForm] Food food)
         {
-            if (foodCreate == null)
-                return BadRequest(foodCreate);
+            if (!ModelState.IsValid)
+                return (IActionResult)Task.FromResult(food);
+
+            if (food == null)
+                return BadRequest(food);
 
             var existFood = _repository.FoodRepository
-                .FindByCondition(x => x.Name.Equals(foodCreate.Name))
+                .FindByCondition(x => x.Name.Equals(food.Name))
                 .FirstOrDefault();
 
             if (existFood != null)
-                return UnprocessableEntity(foodCreate); // Food is already exist
+                return UnprocessableEntity(food); // Food is already exist
 
-            _repository.FoodRepository.Create(foodCreate);
+            //create a new Food instance.  
+            Food newFood = new()
+            {
+                FoodTypeId = food.FoodTypeId,
+                Name = food.Name,
+                Description = food.Description,
+                Price = food.Price,
+            };
+
+            //create a Photo list to store the upload files.  
+            List<Photo> photolist = new List<Photo>();
+            if (food.Files.Count > 0)
+            {
+                foreach (var formFile in food.Files)
+                {
+                    if (formFile.Length > 0)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await formFile.CopyToAsync(memoryStream);
+                            // Upload the file if less than 2 MB  
+                            if (memoryStream.Length < 2097152)
+                            {
+                                //based on the upload file to create Photo instance.  
+                                //You can also check the database, whether the image exists in the database.  
+                                Photo newphoto = new()
+                                {
+                                    Bytes = memoryStream.ToArray(),
+                                    Description = formFile.FileName,
+                                    FileExtension = Path.GetExtension(formFile.FileName),
+                                    Size = formFile.Length,
+                                };
+                                //add the photo instance to the list.  
+                                photolist.Add(newphoto);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("File", "The file is too large.");
+                            }
+                        }
+                    }
+                }
+            }
+            //assign the photos to the Product, using the navigation property.  
+            newFood.Photos = photolist;
+
+            _repository.FoodRepository.Create(newFood);
             _repository.Save();
 
-            return Ok($"{foodCreate.Name} food adding successful!");
+            return Ok($"{newFood.Name} food adding successful!");
         }
 
         [HttpPut("{id}")]
